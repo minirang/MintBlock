@@ -9,6 +9,7 @@
 $.get('https://raw.githubusercontent.com/minirang/MintBlock/refs/heads/main/block.js')
 ```
 ---
+<br>
 참고로 스페셜 블록을 아주 일부 참고했습니다.
 <br><br>
 소스 코드는 마음껏 참고해도 되나, 똑같이 따라 하는 것은 허용되지 않습니다.
