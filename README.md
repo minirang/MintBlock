@@ -8,7 +8,6 @@
 ```javascript
 $.get('https://raw.githubusercontent.com/minirang/MintBlock/refs/heads/main/block.js')
 ```
-<br>  
 ---
 참고로 스페셜 블록을 아주 일부 참고했습니다.  
 <br><br>
