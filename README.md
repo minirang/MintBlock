@@ -19,6 +19,7 @@ $.get('https://raw.githubusercontent.com/minirang/MintBlock/refs/heads/main/bloc
 <br><br>
 단순 재미로만 사용하시고, 제가 하지 않는 이상 널리 퍼뜨리지 말아주세요.
 <br>
+    
 ---
 
 ![License](https://img.shields.io/badge/license-MIT-blue)
