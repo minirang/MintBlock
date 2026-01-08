@@ -429,7 +429,7 @@ addBlock('clear_console', 'clear console %1', {
             size: 11,
         },
     ],
-    def: [null],
+    def: [],
     map: {},
 }, 'text', (sprite, script) => {
 console.clear();
