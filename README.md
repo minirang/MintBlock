@@ -4,7 +4,8 @@
 사용법: 
 1. 엔트리 작품만들기 페이지
 2. F12 ==> 콘솔
-3. ```javascript
+3. 
+```javascript
 $.get('https://raw.githubusercontent.com/minirang/MintBlock/refs/heads/main/block.js')
 ```
 <br><br>
