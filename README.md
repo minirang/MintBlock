@@ -18,7 +18,8 @@ $.get('https://raw.githubusercontent.com/minirang/MintBlock/refs/heads/main/bloc
 버그는 신속히 제보 바랍니다.
 <br><br>
 단순 재미로만 사용하시고, 제가 하지 않는 이상 널리 퍼뜨리지 말아주세요.
----
 <br>
+---
+
 ![License](https://img.shields.io/badge/license-MIT-blue)
 ![JavaScript](https://img.shields.io/badge/language-JavaScript-yellow)
