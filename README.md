@@ -6,7 +6,7 @@
 2. F12 ==> 콘솔
 3. 
 ```javascript
-$.get('https://raw.githubusercontent.com/minirang/MintBlock/refs/heads/main/block.js')
+$.get('https://raw.github.com/minirang/MintBlock/master/block.js')
 ```
 ---
 <br>
