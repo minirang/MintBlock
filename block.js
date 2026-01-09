@@ -597,23 +597,6 @@ addBlock('full_screen', '전체화면 토글 %1', {
 Entry.engine.toggleFullScreen();
 })
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-addBlock('no', '동작없음 %1', {
-    color: '#1fbb87ff',
-    outerline: '#3d836cff',
-}, {
-    params: [
-        {
-            type: 'Indicator',
-            img: 'block_icon/start_icon.svg',
-            size: 55,
-        },
-    ],
-    def: [],
-    map: {},
-}, 'text', (sprite, script) => {
-
-})
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('add_dummy_blocks', '더미블록 불러오기 %1', {
     color: '#1fbb87ff',
     outerline: '#3d836cff',
@@ -629,6 +612,23 @@ addBlock('add_dummy_blocks', '더미블록 불러오기 %1', {
     map: {},
 }, 'text', (sprite, script) => {
 Entry.playground.blockMenu._bannedClass.forEach((block)=>Entry.playground.blockMenu.unbanClass(block));
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('no', '동작없음 %1', {
+    color: '#1fbb87ff',
+    outerline: '#3d836cff',
+}, {
+    params: [
+        {
+            type: 'Indicator',
+            img: 'block_icon/start_icon.svg',
+            size: 55,
+        },
+    ],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+
 })
 ////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('run_javascript_code', '[위험!] 자바스크립트 코드 실행하기 %1 %2', {
@@ -671,8 +671,8 @@ Entry.staticBlocks.push({
         'copy_text',
         'refresh_page',
         'full_screen',
+        'add_dummy_blocks',
         'no',
-		'add_dummy_blocks',
         'run_javascript_code',
     ]
 });
