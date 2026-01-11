@@ -696,13 +696,7 @@ addBlock('get_browser_type', '브라우저 종류값 %1', {
     color: '#1fbb87ff',
     outerline: '#3d836cff',
 }, {
-    params: [
-        {
-            type: 'Indicator',
-            img: 'block_icon/start_icon.svg',
-            size: 11,
-        },
-    ],
+    params: [],
     def: [],
     map: {},
 }, 'text', (sprite, script) => {
