@@ -720,6 +720,7 @@ addBlock('no', '동작없음 %1', {
 
 })
 ////////////////////////////////////////////////////////////////////////////////////////////////
+/*/ //너무 위험해서 주석처리함
 addBlock('run_javascript_code', '[위험!] 자바스크립트 코드 실행하기 %1 %2', {
     color: '#d90909',
     outerline: '#801717ff',
@@ -752,6 +753,7 @@ confirm('최종 확인: 실행하시겠습니까?') &&
 eval(content)
 alert('실행 했습니다.');
 })
+/*/
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 Entry.staticBlocks.push({
     category: 'MintBlocks', blocks: [
@@ -768,7 +770,7 @@ Entry.staticBlocks.push({
         'entry_toast',
         'get_browser_type',
         'no',
-        'run_javascript_code',
+        //'run_javascript_code',
     ]
 });
 updateCategory('MintBlocks')
