@@ -700,7 +700,7 @@ addBlock('get_browser_type', '브라우저 종류값 %1', {
     def: [],
     map: {},
 }, 'text', (sprite, script) => {
-Entry.getBrowserType();
+return Entry.getBrowserType(); //return 필수
 }, 'basic_string_field')
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('no', '동작없음 %1', {
