@@ -793,4 +793,4 @@ alert("민트블록 로딩 완료!");
 console.log('%c 민트블록 로딩 완료!', 'color: #15d8aeff; font-weight: bold; font-size: 50px; font-family: Arial;');
 console.log('%c 제작자: 서울민트초코', 'color: #15d8aeff; font-weight: bold; font-size: 20px; font-family: Arial;');
 
-// d$.get('https://cdn.jsdelivr.net/gh/minirang/MintBlock@master/block.js')
+// d$.get('https://cdn.jsdelivr.net/gh/minirang/MintBlock/block.js')
