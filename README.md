@@ -6,7 +6,7 @@
 2. F12 ==> 콘솔
 3. 
 ```javascript
-$.get('https://cdn.jsdelivr.net/gh/minirang/MintBlock/block.js')
+$.get('https://cdn.jsdelivr.net/gh/minirang/MintBlock@master/block.js')
 ```
 ---
 <br>
