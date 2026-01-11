@@ -337,6 +337,7 @@ const addBlock = (blockname, template, color, params, _class, func, skeleton = '
         template: template,
     }
 }
+//여기까지가 스페셜 블록에서 퍼온거
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('console_log', 'console. %2 %1 %3', {
     color: '#1fbb87ff',
@@ -706,7 +707,7 @@ addBlock('get_browser_type', '브라우저 종류값 %1', {
     map: {},
 }, 'text', (sprite, script) => {
 Entry.getBrowserType();
-})
+}, 'basic_string_field')
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('no', '동작없음 %1', {
     color: '#1fbb87ff',
