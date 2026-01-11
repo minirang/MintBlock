@@ -690,6 +690,23 @@ for (let i = 0; i < number; i++) {
         Entry.toast[type](title, content);
     }
 }})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('get_browser_type', '브라우저 종류값 %1', {
+    color: '#1fbb87ff',
+    outerline: '#3d836cff',
+}, {
+    params: [
+        {
+            type: 'Indicator',
+            img: 'block_icon/start_icon.svg',
+            size: 11,
+        },
+    ],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+Entry.getBrowserType();
+})
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('no', '동작없음 %1', {
     color: '#1fbb87ff',
@@ -754,6 +771,7 @@ Entry.staticBlocks.push({
         'full_screen',
         'add_dummy_blocks',
         'entry_toast',
+        'get_browser_type',
         'no',
         'run_javascript_code',
     ]
