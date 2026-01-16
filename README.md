@@ -8,6 +8,10 @@
 ```javascript
 $.get('https://cdn.jsdelivr.net/gh/minirang/MintBlock@master/block.js')
 ```
+조금이라도 더 안전한 버전을 쓰고 싶다면 
+```javascript
+$.get('https://raw.githack.com/minirang/MintBlock/main/safe_mintBlock.js')
+```
 ---
 <br>
 참고로 스페셜 블록을 아주 일부 참고했습니다.
