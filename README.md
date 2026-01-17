@@ -6,7 +6,7 @@
 2. F12 ==> 콘솔
 3. 
 ```javascript
-$.get('https://github.com/minirang/MintBlock/blob/main/block.js')
+$.get('https://raw.githack.com/minirang/MintBlock/main/block.js')
 ```
 조금이라도 더 안전한 버전을 쓰고 싶다면 
 ```javascript
