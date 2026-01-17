@@ -521,7 +521,7 @@ addBlock('open_url', 'open URL %1 %2', {
     },
 }, 'text', (sprite, script) => {
 const content = script.getValue('CONTENT', script);
-window.open(content, '_blank');
+window.open('https://playentry.org/redirect?external=' + content, '_blank');
 })
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('get_browser_type', '브라우저 종류값 %1', {
