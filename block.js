@@ -741,7 +741,7 @@ addBlock('entry_toast', '%1 제목의 %2 메시지를 %3 종류로 %4 %5 번 뜨
                 ['경고', 'alert'],
             ],
             fontSize: 11,
-            arrowColor: '#27aa7eff',
+            arrowColor: 'rgb(67, 117, 192)',
             value: 'warning'
         },
         {
@@ -751,7 +751,7 @@ addBlock('entry_toast', '%1 제목의 %2 메시지를 %3 종류로 %4 %5 번 뜨
                 ['조금 후에 자동 삭제되게', 'maintain'],
             ],
             fontSize: 11,
-            arrowColor: '#27aa7eff',
+            arrowColor: 'rgb(67, 117, 192)',
             value: 'auto-dispose'
         },
         {
