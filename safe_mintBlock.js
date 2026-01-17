@@ -565,6 +565,35 @@ navigator.clipboard.writeText(content);
 alert('텍스트가 복사되었습니다: ' + content);
 })
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('edit_page_title', '페이지 제목을 %1로 바꾸기 %2', {
+    color: c1,
+    outerline: o1,
+}, {
+    params: [
+        {
+            type: 'Block',
+            accept: 'string',
+        },
+        {
+            type: 'Indicator',
+            img: 'block_icon/start_icon.svg',
+            size: 11,
+        },
+    ],
+    def: [
+        {
+            type: 'text',
+            params: ['헤헷']
+        }
+    ],
+    map: {
+        CONTENT: 0,
+    },
+}, 'text', (sprite, script) => {
+const content = script.getValue('CONTENT', script);
+document.title = content;
+})
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('refresh_page', '페이지 새로고침하기 %1', {
     color: c1,
     outerline: o1,
@@ -712,7 +741,7 @@ addBlock('entry_toast', '%1 제목의 %2 메시지를 %3 종류로 %4 %5 번 뜨
                 ['경고', 'alert'],
             ],
             fontSize: 11,
-            arrowColor: '#27aa7eff',
+            arrowColor: 'rgb(67, 117, 192)',
             value: 'warning'
         },
         {
@@ -722,7 +751,7 @@ addBlock('entry_toast', '%1 제목의 %2 메시지를 %3 종류로 %4 %5 번 뜨
                 ['조금 후에 자동 삭제되게', 'maintain'],
             ],
             fontSize: 11,
-            arrowColor: '#27aa7eff',
+            arrowColor: 'rgb(67, 117, 192)',
             value: 'auto-dispose'
         },
         {
@@ -878,6 +907,7 @@ Entry.staticBlocks.push({
         'open_url',
         'get_browser_type',
         'copy_text',
+        'edit_page_title',
         'refresh_page',
 
         'text-extend-entry-functions',
