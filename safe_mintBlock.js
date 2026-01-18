@@ -922,7 +922,7 @@ const x = script.getValue('X', script);
 const y = script.getValue('Y', script);
 Entry.engine.projectTimer.setName(name);
 Entry.engine.projectTimer.setX(x);
-Entry.engine.projectTimer.setY(y);
+Entry.engine.projectTimer.setY(y * -1);
 },)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('move_variables', '변수 %1를 X %2 Y %3 위치로 옮기기 %4', {
@@ -973,7 +973,7 @@ const x = script.getValue('X', script);
 const y = script.getValue('Y', script);
 const variable = Entry.variableContainer.getVariable(type);
 variable?.setX(x);
-variable?.setY(y);
+variable?.setY(y * -1);
 Entry.playground.refreshPlayground();
 Entry.playground.reloadPlayground();
 })
@@ -1024,20 +1024,21 @@ addBlock('text-made-of-fun', '%1', {
     map: {},
 })
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-addBlock('no', '동작없음 %1', {
-    color: '#1fbb87ff',
-    outerline: '#3d836cff',
+addBlock('open_maker_mypage', '제작자 마이페이지 열기 %1', {
+    color: 'rgb(0, 0, 0)',
+    outerline: 'rgb(32, 32, 32)',
 }, {
     params: [
         {
             type: 'Indicator',
             img: 'block_icon/start_icon.svg',
-            size: 55,
+            size: 11,
         },
     ],
     def: [],
     map: {},
 }, 'text', (sprite, script) => {
+window.open('https://playentry.org/profile/62d00ecb8b49cc01e2b68603', '_blank');
 })
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('cute_block', '%1    ', {
@@ -1060,6 +1061,22 @@ addBlock('cute_block', '%1    ', {
 }, 'text', (sprite, script) => {
 //아무 동작 없음
 }, 'basic_event')
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('no', '동작없음 %1', {
+    color: '#1fbb87ff',
+    outerline: '#3d836cff',
+}, {
+    params: [
+        {
+            type: 'Indicator',
+            img: 'block_icon/start_icon.svg',
+            size: 55,
+        },
+    ],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+})
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-dangerous-blocks', '%1', {
 			color: EntryStatic.colorSet.common.TRANSPARENT,
@@ -1108,8 +1125,9 @@ Entry.staticBlocks.push({
 
         'text-made-of-fun',
 
-        'no',
         'cute_block',
+        'no',
+        'open_maker_mypage',
     ]
 });
 updateCategory('MintBlocks')
