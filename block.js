@@ -1153,8 +1153,8 @@ Entry.staticBlocks.push({
 
         'text-made-of-fun',
 
-        'no',
         'cute_block',
+        'no',
         'open_maker_mypage',
 
         'text-dangerous-blocks',
