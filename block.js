@@ -610,6 +610,67 @@ addBlock('refresh_page', '페이지 새로고침하기 %1', {
 }, 'text', (sprite, script) => {
 location.reload();
 }, 'basic_without_next')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('ascii', '%1 을/를 아스키 코드로 변환한 값 (한글자만)', {
+    color: c1,
+    outerline: o1,
+}, {
+    params: [
+        {
+            type: 'Block',
+            accept: 'string',
+        },
+    ],
+    def: [
+        {
+            type: 'text',
+            params: ['A']
+        },
+    ],
+    map: {
+        CONTENT: 0,
+    },
+}, 'text', (sprite, script) => {
+const content = script.getValue('CONTENT', script);
+if (content.length === 1) {
+    content.charCodeAt(0);
+    return content.charCodeAt(0);
+}
+else {
+    Entry.toast.alert('아스키 코드 변환 블록 오류', '한 글자만 입력해주세요.');
+    Entry.engine.toggleStop();
+}
+}, 'basic_string_field')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('trim', '%1 을/를 trim한 값', {
+    color: c1,
+    outerline: o1,
+}, {
+    params: [
+        {
+            type: 'Block',
+            accept: 'string',
+        },
+    ],
+    def: [
+        {
+            type: 'text',
+            params: ['            Hello World!           ']
+        },
+    ],
+    map: {
+        CONTENT: 0,
+    },
+}, 'text', (sprite, script) => {
+const content = script.getValue('CONTENT', script);
+if (content.trim() === content) {
+    return content;
+}
+else{
+    content.trim();
+    return content.trim();
+}
+}, 'basic_string_field')
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-extend-entry-functions', '%1', {
 			color: EntryStatic.colorSet.common.TRANSPARENT,
@@ -803,27 +864,148 @@ addBlock('if_scene_is', '만약 현재 장면이 %1 이라면', {
 }, {
     params: [
         {
-            type: 'Block',
-            accept: 'string',
+            type: 'DropdownDynamic',
+            value: null,
+            menuName: 'scenes',
+            fontSize: 11,
+            arrowColor: 'rgb(67, 117, 192)',
         },
     ],
-    def: [
-        {
-            type: 'text',
-            params: ['장면 1']
-        },
-    ],
+    def: [],
     map: {
-        CONTENT: 0,
+        TYPE: 0,
     },
 }, 'text', (sprite, script) => {
-const content = script.getValue('CONTENT', script);
-if (Entry.scene.selectedScene.name === content) {
+const type = script.getValue('TYPE', script);
+if (Entry.scene.selectedScene.id === type) {
     return true;
 } else {
     return false;
 }
 }, 'basic_boolean_field')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('unlock_timer_features', '초시계 이름을 %1 (으)로 정하고 초시계 위치의 X를 %2 로 Y를 %3 (으)로 정하기 %4', {
+    color: c2,
+    outerline: o2,
+}, {
+    params: [
+        {
+            type: 'Block',
+            accept: 'string',
+            value: '스톱워치', //def쓰기 귀찮아
+        },
+        {
+            type: 'Block',
+            accept: 'string',
+            value: '100',
+        },
+        {
+            type: 'Block',
+            accept: 'string',
+            value: '50',
+        },
+        {
+            type: 'Indicator',
+            img: 'block_icon/flow_icon.svg',
+            size: 11,
+        },
+    ],
+    def: [],
+    map: {
+        NAME: 0,
+        X: 1,
+        Y: 2,
+    },
+}, 'text', (sprite, script) => {
+const name = script.getValue('NAME', script);
+const x = script.getValue('X', script);
+const y = script.getValue('Y', script);
+Entry.engine.projectTimer.setName(name);
+Entry.engine.projectTimer.setX(x);
+Entry.engine.projectTimer.setY(y);
+},)
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('move_variables', '변수 %1를 X %2 Y %3 위치로 옮기기 %4', {
+    color: c2,
+    outerline: o2,
+}, {
+    params: [
+        {
+            type: 'DropdownDynamic',
+            value: null,
+            menuName: 'variables',
+            fontSize: 11,
+            arrowColor: 'rgb(67, 117, 192)',
+        },
+        {
+            type: 'Block',
+            accept: 'string'
+        },
+        {
+            type: 'Block',
+            accept: 'string'
+        },
+        {
+            type: 'Indicator',
+            img: 'block_icon/flow_icon.svg',
+            size: 11,
+        }
+    ],
+    def: [
+        {
+            type: 'text',
+            params: [20]
+        },
+        {
+            type: 'text',
+            params: [13]
+        }
+
+    ],
+    map: {
+        TYPE: 0,
+        X: 1,
+        Y: 2,
+    },
+}, 'text', (sprite, script) => {
+const type = script.getValue('TYPE', script);
+const x = script.getValue('X', script);
+const y = script.getValue('Y', script);
+const variable = Entry.variableContainer.getVariable(type);
+variable?.setX(x);
+variable?.setY(y);
+Entry.playground.refreshPlayground();
+Entry.playground.reloadPlayground();
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('set_fps', '작품 FPS를 %1 (으)로 정하기 %2', {
+    color: c2,
+    outerline: o2,
+}, {
+    params: [
+        {
+            type: 'Block',
+            accept: 'string',
+        },
+        {
+            type: 'Indicator',
+            img: 'block_icon/flow_icon.svg',
+            size: 11,
+        },
+    ],
+    def: [
+        {
+            type: 'text',
+            params: ['60']
+        },
+    ],
+    map: {
+        NUMBER: 0,
+    },
+}, 'text', (sprite, script) => {
+const number = script.getValue('NUMBER', script);
+Entry.FPS = number;
+},)
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-made-of-fun', '%1', {
 			color: EntryStatic.colorSet.common.TRANSPARENT,
@@ -896,7 +1078,7 @@ addBlock('text-dangerous-blocks', '%1', {
     map: {},
 })
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-addBlock('run_javascript_code', '[위험!] 자바스크립트 코드 실행하기 " %1 "  ', {
+addBlock('run_javascript_code', '[위험!] 자바스크립트 코드 %1 실행하기', {
     color: '#d90909',
     outerline: '#801717ff',
 }, {
@@ -937,6 +1119,8 @@ Entry.staticBlocks.push({
         'copy_text',
         'edit_page_title',
         'refresh_page',
+        'ascii',
+        'trim',
 
         'text-extend-entry-functions',
 
@@ -946,6 +1130,9 @@ Entry.staticBlocks.push({
         'get_dummy_blocks',
         'entry_toast',
         'if_scene_is',
+        'unlock_timer_features',
+        'move_variables',
+        'set_fps',
 
         'text-made-of-fun',
 
