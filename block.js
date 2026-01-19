@@ -1037,7 +1037,7 @@ addBlock('stop', '정지하기 %1', {
     map: {},
 }, 'text', (sprite, script) => {
 Entry.engine.toggleStop()
-},)
+}, 'basic_without_next')
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-made-of-fun', '%1', {
 			color: EntryStatic.colorSet.common.TRANSPARENT,
