@@ -1020,7 +1020,7 @@ addBlock('set_fps', '작품 FPS를 %1 (으)로 정하기 %2', {
 }, 'text', (sprite, script) => {
 const number = script.getValue('NUMBER', script);
 Entry.FPS = number;
-},)
+})
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('stop', '정지하기 %1', {
     color: c2,
@@ -1037,7 +1037,7 @@ addBlock('stop', '정지하기 %1', {
     map: {},
 }, 'text', (sprite, script) => {
 Entry.engine.toggleStop()
-},)
+}, 'basic_without_next')
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-made-of-fun', '%1', {
 			color: EntryStatic.colorSet.common.TRANSPARENT,
