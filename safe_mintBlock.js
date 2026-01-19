@@ -341,7 +341,7 @@ const addBlock = (blockname, template, color, params, _class, func, skeleton = '
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-javascript-functions', '%1', {
 			color: EntryStatic.colorSet.common.TRANSPARENT,
-    outerline: EntryStatic.colorSet.common.TRANSPARENT
+            outerline: EntryStatic.colorSet.common.TRANSPARENT
 }, {
     params: [
         {
@@ -674,7 +674,7 @@ else{
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-extend-entry-functions', '%1', {
 			color: EntryStatic.colorSet.common.TRANSPARENT,
-    outerline: EntryStatic.colorSet.common.TRANSPARENT
+            outerline: EntryStatic.colorSet.common.TRANSPARENT
 }, {
     params: [
         {
@@ -781,7 +781,7 @@ addBlock('get_dummy_blocks', '더미블록 불러오기 %1', {
 Entry.playground.blockMenu._bannedClass.forEach((block)=>Entry.playground.blockMenu.unbanClass(block));
 })
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-addBlock('entry_toast', '%1 제목의 %2 메시지를 %3 종류로 %4 %5 번 뜨게하기 %6', {
+addBlock('entry_toast', '%1 제목의 %2 메시지를 %3 종류로 %4 %5 번 뜨게하고 %6 %7', {
     color: c2,
     outerline: o2,
 }, {
@@ -808,18 +808,28 @@ addBlock('entry_toast', '%1 제목의 %2 메시지를 %3 종류로 %4 %5 번 뜨
         {
             type: 'Dropdown',
             options: [
-                ['유지되게', 'auto-dispose'],
                 ['조금 후에 자동 삭제되게', 'maintain'],
+                ['유지되게', 'auto-dispose'],
             ],
             fontSize: 11,
             arrowColor: 'rgb(67, 117, 192)',
-            value: 'auto-dispose'
+            value: 'maintain'
         },
         {
             type: 'Block',
             accept: 'string',
             value: '1',
             //def가 잘 안된다면 type이 Block이여도 이렇게 직접적으로 def 설정해도 됨
+        },
+        {
+            type: 'Dropdown',
+            options: [
+                ['계속 작품 실행하기', 'run'],
+                ['정지하기', 'stop'],
+            ],
+            fontSize: 11,
+            arrowColor: 'rgb(67, 117, 192)',
+            value: 'run'
         },
         {
             type: 'Indicator',
@@ -843,6 +853,7 @@ addBlock('entry_toast', '%1 제목의 %2 메시지를 %3 종류로 %4 %5 번 뜨
         TYPE: 2,
         OPTION: 3,
         NUMBER: 4,
+        RUN: 5,
     },
 }, 'text', (sprite, script) => {
 const type = script.getValue('TYPE', script);
@@ -850,12 +861,16 @@ const title = script.getValue('TITLE', script);
 const content = script.getValue('CONTENT', script);
 const option = script.getValue('OPTION', script);
 const number = script.getValue('NUMBER', script);
+const run = script.getValue('RUN', script);
 for (let i = 0; i < number; i++) {
     if (option === 'auto-dispose') {
         Entry.toast[type](title, content, 'auto-dispose');
     } else {
         Entry.toast[type](title, content);
     }
+if (run === 'stop') {
+    Entry.engine.toggleStop();
+}
 }})
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('if_scene_is', '만약 현재 장면이 %1 이라면', {
@@ -864,7 +879,7 @@ addBlock('if_scene_is', '만약 현재 장면이 %1 이라면', {
 }, {
     params: [
         {
-            type: 'DropdownDynamic',
+            type: 'DropdownDynamic', //이런것도 있었네 menuName을 입력하면 그에 맞게 자동으로 드롭다운 항목이 늘어나고 줄어드는 구조
             value: null,
             menuName: 'scenes',
             fontSize: 11,
@@ -1006,10 +1021,27 @@ addBlock('set_fps', '작품 FPS를 %1 (으)로 정하기 %2', {
 const number = script.getValue('NUMBER', script);
 Entry.FPS = number;
 },)
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('stop', '정지하기 %1', {
+    color: c2,
+    outerline: o2,
+}, {
+    params: [
+        {
+            type: 'Indicator',
+            img: 'block_icon/flow_icon.svg',
+            size: 11,
+        },
+    ],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+Entry.engine.toggleStop()
+},)
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-made-of-fun', '%1', {
 			color: EntryStatic.colorSet.common.TRANSPARENT,
-    outerline: EntryStatic.colorSet.common.TRANSPARENT
+            outerline: EntryStatic.colorSet.common.TRANSPARENT
 }, {
     params: [
         {
@@ -1024,23 +1056,6 @@ addBlock('text-made-of-fun', '%1', {
     map: {},
 })
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-addBlock('open_maker_mypage', '제작자 마이페이지 열기 %1', {
-    color: 'rgb(0, 0, 0)',
-    outerline: 'rgb(32, 32, 32)',
-}, {
-    params: [
-        {
-            type: 'Indicator',
-            img: 'block_icon/hardware_icon.svg',
-            size: 11,
-        },
-    ],
-    def: [],
-    map: {},
-}, 'text', (sprite, script) => {
-window.open('https://playentry.org/profile/62d00ecb8b49cc01e2b68603', '_blank');
-})
-///////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('cute_block', '%1    ', {
     color: '#1fbb87ff',
     outerline: '#3d836cff',
@@ -1061,7 +1076,7 @@ addBlock('cute_block', '%1    ', {
 }, 'text', (sprite, script) => {
 //아무 동작 없음
 }, 'basic_event')
-///////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('no', '동작없음 %1', {
     color: '#1fbb87ff',
     outerline: '#3d836cff',
@@ -1078,9 +1093,26 @@ addBlock('no', '동작없음 %1', {
 }, 'text', (sprite, script) => {
 })
 //////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('open_maker_mypage', '제작자 마이페이지 열기 %1', {
+    color: 'rgb(0, 0, 0)',
+    outerline: 'rgb(32, 32, 32)',
+}, {
+    params: [
+        {
+            type: 'Indicator',
+            img: 'block_icon/hardware_icon.svg',
+            size: 11,
+        },
+    ],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+window.open('https://playentry.org/profile/62d00ecb8b49cc01e2b68603', '_blank');
+})
+///////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-dangerous-blocks', '%1', {
 			color: EntryStatic.colorSet.common.TRANSPARENT,
-    outerline: EntryStatic.colorSet.common.TRANSPARENT
+            outerline: EntryStatic.colorSet.common.TRANSPARENT
 }, {
     params: [
         {
@@ -1093,6 +1125,34 @@ addBlock('text-dangerous-blocks', '%1', {
     ],
     def: [],
     map: {},
+})
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('run_javascript_code', '[위험!] 자바스크립트 코드 %1 실행하기', {
+    color: '#d90909',
+    outerline: '#801717ff',
+}, {
+    params: [
+        {
+            type: 'Block',
+            accept: 'string',
+        },
+    ],
+    def: [
+        {
+            type: 'text',
+            params: ['10']
+        }
+    ],
+    map: {
+        CONTENT: 0,
+    },
+}, 'text', (sprite, script) => {
+const content = script.getValue('CONTENT', script);
+if (confirm('자바스크립트 코드를 실행하시겠습니까? 실행한 코드로 인해 발생하는 문제에 대해 제작자는 책임지지 않습니다.')) {
+    if (confirm('정말 실행하시겠습니까?')) {
+        eval(content);
+    }
+}
 })
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 Entry.staticBlocks.push({
@@ -1122,6 +1182,7 @@ Entry.staticBlocks.push({
         'unlock_timer_features',
         'move_variables',
         'set_fps',
+        'stop',
 
         'text-made-of-fun',
 
@@ -1150,4 +1211,3 @@ alert("민트블록 로딩 완료!");
 console.log('%c 민트블록 로딩 완료!', 'color: #15d8aeff; font-weight: bold; font-size: 50px; font-family: Arial;');
 console.log('%c 제작자: 서울민트초코', 'color: #15d8aeff; font-weight: bold; font-size: 20px; font-family: Arial;');
 
-// d$.get('https://cdn.jsdelivr.net/gh/minirang/MintBlock/block.js')
