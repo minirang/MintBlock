@@ -1197,13 +1197,13 @@ Entry.staticBlocks.push({
 });
 updateCategory('MintBlocks')
 $('head').append(`<style> #entryCategoryMintBlocks 
-{ background-image: url(https://minirang.github.io/img/logo.svg); 
+{ background-image: url(https://playentry.org/uploads/%EC%84%9C%EC%9A%B8%EB%AF%BC%ED%8A%B8%EC%B4%88%EC%BD%94_not_move.svg); 
  background-repeat: no-repeat; 
  border-bottom-right-radius: 6px; 
  border-bottom-left-radius: 6px; 
  margin-bottom: 1px; 
  } .entrySelectedCategory#entryCategoryMintBlocks 
-  { background-image: https://minirang.github.io/img/logo.svg; 
+  { background-image: https://playentry.org/uploads/%EC%84%9C%EC%9A%B8%EB%AF%BC%ED%8A%B8%EC%B4%88%EC%BD%94_not_move.svg; 
 background-color: #15d8aeff;
 border-color: #21bb8dff;
 color: #ffffffff;
