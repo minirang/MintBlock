@@ -341,19 +341,19 @@ const addBlock = (blockname, template, color, params, _class, func, skeleton = '
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-javascript-functions', '%1', {
 			color: EntryStatic.colorSet.common.TRANSPARENT,
-            outerline: EntryStatic.colorSet.common.TRANSPARENT
+            outerline: EntryStatic.colorSet.common.TRANSPARENT,
 }, {
     params: [
         {
             type: 'Text',
             text: '자바스크립트 기능들',
             color: EntryStatic.colorSet.common.TEXT,
-            class: 'bold',
             align: 'right',
         }
     ],
     def: [],
     map: {},
+    class: 'text',
 })
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 const c1 = '#1fbb87ff';
@@ -681,12 +681,12 @@ addBlock('text-extend-entry-functions', '%1', {
             type: 'Text',
             text: '엔트리 확장 기능',
             color: EntryStatic.colorSet.common.TEXT,
-            class: 'bold',
             align: 'right',
         }
     ],
     def: [],
     map: {},
+    class: 'text',
 })
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const c2 = 'rgb(117, 164, 233)';
@@ -745,23 +745,6 @@ addBlock('search_to_google', '구글에 %1 검색하기 %2', {
 }, 'text', (sprite, script) => {
 const content = script.getValue('CONTENT', script);
 window.open("https://www.google.com/search?q=" + content, '_blank');
-})
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-addBlock('full_screen', '전체화면 토글 %1', {
-    color: c2,
-    outerline: o2,
-}, {
-    params: [
-        {
-            type: 'Indicator',
-            img: 'block_icon/flow_icon.svg',
-            size: 11,
-        },
-    ],
-    def: [],
-    map: {},
-}, 'text', (sprite, script) => {
-Entry.engine.toggleFullScreen();
 })
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('get_dummy_blocks', '더미블록 불러오기 %1', {
@@ -873,7 +856,7 @@ if (run === 'stop') {
 }
 }})
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-addBlock('if_scene_is', '만약 현재 장면이 %1 이라면', {
+addBlock('if_scene_is', '만약 현재 장면이 %1 인가?', {
     color: c2,
     outerline: o2,
 }, {
@@ -1022,7 +1005,36 @@ const number = script.getValue('NUMBER', script);
 Entry.FPS = number;
 })
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-addBlock('stop', '정지하기 %1', {
+addBlock('entry_console', '엔트리 콘솔로 %1 출력하기 %2', {
+    color: c2,
+    outerline: o2,
+}, {
+    params: [
+        {
+            type: 'Block',
+            accept: 'string',
+        },
+        {
+            type: 'Indicator',
+            img: 'block_icon/flow_icon.svg',
+            size: 11,
+        },
+    ],
+    def: [
+        {
+            type: 'text',
+            params: ['엔트리']
+        },
+    ],
+    map: {
+        NUMBER: 0,
+    },
+}, 'text', (sprite, script) => {
+const number = script.getValue('NUMBER', script);
+return Entry.console.print(content);
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('entry_console_clear', '엔트리 콘솔 지우기 %1', {
     color: c2,
     outerline: o2,
 }, {
@@ -1031,6 +1043,42 @@ addBlock('stop', '정지하기 %1', {
             type: 'Indicator',
             img: 'block_icon/flow_icon.svg',
             size: 11,
+        }
+    ],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+Entry.console.clear();
+})
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('text-project', '%1', {
+			color: EntryStatic.colorSet.common.TRANSPARENT,
+            outerline: EntryStatic.colorSet.common.TRANSPARENT
+}, {
+    params: [
+        {
+            type: 'Text',
+            text: '작품',
+            color: EntryStatic.colorSet.common.TEXT,
+            align: 'right',
+        }
+    ],
+    def: [],
+    map: {},
+    class: 'text',
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const c3 = '#c07b20';
+const o3 = '#866b20';
+addBlock('stop', '정지하기 %1', {
+    color: c3,
+    outerline: o3,
+}, {
+    params: [
+        {
+            type: 'Indicator',
+            img: 'block_icon/func_icon.svg',
+            size: 11,
         },
     ],
     def: [],
@@ -1038,7 +1086,67 @@ addBlock('stop', '정지하기 %1', {
 }, 'text', (sprite, script) => {
 Entry.engine.toggleStop()
 }, 'basic_without_next')
-//////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('pause', '일시정지하기 %1', {
+    color: c3,
+    outerline: o3,
+}, {
+    params: [
+        {
+            type: 'Indicator',
+            img: 'block_icon/func_icon.svg',
+            size: 11,
+        },
+    ],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+Entry.engine.togglePause()
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('full_screen', '전체화면 토글 %1', {
+    color: c3,
+    outerline: o3,
+}, {
+    params: [
+        {
+            type: 'Indicator',
+            img: 'block_icon/func_icon.svg',
+            size: 11,
+        },
+    ],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+Entry.engine.toggleFullScreen();
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('project_id', '작품 id', {
+    color: c3,
+    outerline: o3,
+}, {
+    params: [],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+return Entry.projectId;
+}, 'basic_string_field')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('entry_clipboard_length', '엔트리 작품 클립보드 길이', {
+    color: c3,
+    outerline: o3,
+}, {
+    params: [],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+if (Entry.clipboard === null) {
+    return;
+} else {
+    return Entry.clipboard.length;
+}
+}, 'basic_string_field')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-made-of-fun', '%1', {
 			color: EntryStatic.colorSet.common.TRANSPARENT,
             outerline: EntryStatic.colorSet.common.TRANSPARENT
@@ -1048,12 +1156,12 @@ addBlock('text-made-of-fun', '%1', {
             type: 'Text',
             text: '심심해서 만든 블록들',
             color: EntryStatic.colorSet.common.TEXT,
-            class: 'bold',
             align: 'right',
         }
     ],
     def: [],
     map: {},
+    class: 'text',
 })
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('cute_block', '%1    ', {
@@ -1119,12 +1227,12 @@ addBlock('text-dangerous-blocks', '%1', {
             type: 'Text',
             text: '위험한 블록들',
             color: EntryStatic.colorSet.common.TEXT,
-            class: 'bold',
             align: 'right',
         }
     ],
     def: [],
     map: {},
+    class: 'text',
 })
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('run_javascript_code', '[위험!] 자바스크립트 코드 %1 실행하기', {
@@ -1175,14 +1283,22 @@ Entry.staticBlocks.push({
 
         'convert-to-binary',
         'search_to_google',
-        'full_screen',
         'get_dummy_blocks',
         'entry_toast',
         'if_scene_is',
         'unlock_timer_features',
         'move_variables',
         'set_fps',
+        'entry_console',
+        'entry_console_clear',
+
+        'text-project',
+
         'stop',
+        'pause',
+        'full_screen',
+        'project_id',
+        'entry_clipboard_length',
 
         'text-made-of-fun',
 
