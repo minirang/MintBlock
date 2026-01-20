@@ -1027,10 +1027,10 @@ addBlock('entry_console', '엔트리 콘솔로 %1 출력하기 %2', {
         },
     ],
     map: {
-        NUMBER: 0,
+        CONTENT: 0,
     },
 }, 'text', (sprite, script) => {
-const number = script.getValue('NUMBER', script);
+const content = script.getValue('CONTENT', script);
 return Entry.console.print(content);
 })
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
