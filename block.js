@@ -349,7 +349,7 @@ addBlock('text-javascript-functions', '%1', {
             text: '자바스크립트 기능들',
             color: EntryStatic.colorSet.common.TEXT,
             align: 'right',
-        }
+        },
     ],
     def: [],
     map: {},
@@ -671,6 +671,30 @@ else{
     return content.trim();
 }
 }, 'basic_string_field')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('prompt', '%1 메시지로 프롬프트 창을 띄웠을때 대답', {
+    color: c1,
+    outerline: o1,
+}, {
+    params: [
+        {
+            type: 'Block',
+            accept: 'string',
+        },
+    ],
+    def: [
+        {
+            type: 'text',
+            params: ['입력']
+        },
+    ],
+    map: {
+        CONTENT: 0,
+    },
+}, 'text', (sprite, script) => {
+const content = script.getValue('CONTENT', script);
+return prompt(content);
+}, 'basic_string_field')
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-extend-entry-functions', '%1', {
 			color: EntryStatic.colorSet.common.TRANSPARENT,
@@ -689,8 +713,8 @@ addBlock('text-extend-entry-functions', '%1', {
     class: 'text',
 })
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const c2 = 'rgb(117, 164, 233)';
-const o2 = 'rgb(69, 123, 204)';
+const c2 = '#75a4e9';
+const o2 = '#457bcc';
 addBlock('convert-to-binary', '%1을/를 이진수로 변환한 값', {
     color: c2,
     outerline: o2,
@@ -785,7 +809,7 @@ addBlock('entry_toast', '%1 제목의 %2 메시지를 %3 종류로 %4 %5 번 뜨
                 ['경고', 'alert'],
             ],
             fontSize: 11,
-            arrowColor: 'rgb(67, 117, 192)',
+            arrowColor: '#4375c0',
             value: 'warning'
         },
         {
@@ -795,7 +819,7 @@ addBlock('entry_toast', '%1 제목의 %2 메시지를 %3 종류로 %4 %5 번 뜨
                 ['유지되게', 'auto-dispose'],
             ],
             fontSize: 11,
-            arrowColor: 'rgb(67, 117, 192)',
+            arrowColor: '#4375c0',
             value: 'maintain'
         },
         {
@@ -811,7 +835,7 @@ addBlock('entry_toast', '%1 제목의 %2 메시지를 %3 종류로 %4 %5 번 뜨
                 ['정지하기', 'stop'],
             ],
             fontSize: 11,
-            arrowColor: 'rgb(67, 117, 192)',
+            arrowColor: '#4375c0',
             value: 'run'
         },
         {
@@ -866,7 +890,7 @@ addBlock('if_scene_is', '만약 현재 장면이 %1 인가?', {
             value: null,
             menuName: 'scenes',
             fontSize: 11,
-            arrowColor: 'rgb(67, 117, 192)',
+            arrowColor: '#4375c0',
         },
     ],
     def: [],
@@ -933,7 +957,7 @@ addBlock('move_variables', '변수 %1를 X %2 Y %3 위치로 옮기기 %4', {
             value: null,
             menuName: 'variables',
             fontSize: 11,
-            arrowColor: 'rgb(67, 117, 192)',
+            arrowColor: '#4375c0',
         },
         {
             type: 'Block',
@@ -1077,7 +1101,7 @@ addBlock('stop', '정지하기 %1', {
     params: [
         {
             type: 'Indicator',
-            img: 'block_icon/func_icon.svg',
+            img: 'block_icon/start_icon_play.svg',
             size: 11,
         },
     ],
@@ -1094,7 +1118,7 @@ addBlock('pause', '일시정지하기 %1', {
     params: [
         {
             type: 'Indicator',
-            img: 'block_icon/func_icon.svg',
+            img: 'block_icon/start_icon_play.svg',
             size: 11,
         },
     ],
@@ -1111,7 +1135,7 @@ addBlock('full_screen', '전체화면 토글 %1', {
     params: [
         {
             type: 'Indicator',
-            img: 'block_icon/func_icon.svg',
+            img: 'block_icon/start_icon_play.svg',
             size: 11,
         },
     ],
@@ -1119,6 +1143,146 @@ addBlock('full_screen', '전체화면 토글 %1', {
     map: {},
 }, 'text', (sprite, script) => {
 Entry.engine.toggleFullScreen();
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('set_user_info', '%1 를 %2 로 정하기 %3', {
+    color: c3,
+    outerline: o3,
+}, {
+    params: [
+        {
+            type: 'Dropdown',
+            options: [
+                ['닉네임', 'nickname'],
+                ['id', 'username'],
+            ],
+            fontSize: 11,
+            arrowColor: '#8f3c15',
+            value: 'nickname'
+        },
+        {
+            type: 'Block',
+            accept: 'string',
+            value: '서울민트초코'
+        },
+        {
+            type: 'Indicator',
+            img: 'block_icon/start_icon_play.svg',
+            size: 11,
+        },
+    ],
+    def: [],
+    map: {
+        TYPE: 0,
+        CONTENT: 1,
+    },
+}, 'text', (sprite, script) => {
+const content = script.getValue('CONTENT', script);
+const type = script.getValue('TYPE', script);
+user[type] = content;
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('add_scene', '%1 이름의 장면 추가하기 %2', {
+    color: c3,
+    outerline: o3,
+}, {
+    params: [
+        {
+            type: 'Block',
+            accept: 'string',
+            value: '장면 2'
+        },
+        {
+            type: 'Indicator',
+            img: 'block_icon/start_icon_play.svg',
+            size: 11,
+        },
+    ],
+    def: [],
+    map: {
+        CONTENT: 0,
+    },
+}, 'text', (sprite, script) => {
+const content = script.getValue('CONTENT', script);
+Entry.scene.addScene({name: content})
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('add_varible', '%1 이름의 %2 변수 추가하기 %3', {
+    color: c3,
+    outerline: o3,
+}, {
+    params: [
+        {
+            type: 'Block',
+            accept: 'string',
+            value: '서울민트초코'
+        },
+        {
+            type: 'Dropdown',
+            options: [
+                ['일반', 'standard'],
+                ['공유', 'share'],
+                ['실시간', 'live'],
+            ],
+            fontSize: 11,
+            arrowColor: '#8f3c15',
+            value: 'standard'
+        },
+        {
+            type: 'Indicator',
+            img: 'block_icon/start_icon_play.svg',
+            size: 11,
+        },
+    ],
+    def: [],
+    map: {
+        CONTENT: 0,
+        LIVE: 1,
+    },
+}, 'text', (sprite, script) => {
+const content = script.getValue('CONTENT', script);
+const live = script.getValue('LIVE', script);
+if (live === 'standard') {
+    Entry.variableContainer.addVariable({name: content, value: 0});
+}
+else if (live === 'share') {
+    Entry.variableContainer.addVariable({name: content, value: 0, isCloud: true});
+}
+else {
+    Entry.variableContainer.addVariable({name: content, value: 0, isRealTime: true});
+}
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('set_var', '변수 %1 를 %2 라고 정하기 %3', {
+    color: c3,
+    outerline: o3,
+}, {
+    params: [
+        {
+            type: 'Block',
+            accept: 'string',
+            value: '서울민트초코', //실시간으로 변수를 추가할때 미리 값을 바꿀수 있도록 만든 블록입니다.
+        },
+        {
+            type: 'Block',
+            accept: 'string',
+            value: 1
+        },
+        {
+            type: 'Indicator',
+            img: 'block_icon/start_icon_play.svg',
+            size: 11,
+        },
+    ],
+    def: [],
+    map: {
+        VARIABLE: 0,
+        CONTENT: 1,
+    },
+}, 'text', (sprite, script) => {
+const variable = script.getValue('VARIABLE', script)
+const content = script.getValue('CONTENT', script);
+Entry.variableContainer.getVariableByName(variable)?.setValue(content);
 })
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('project_id', '작품 id', {
@@ -1145,6 +1309,136 @@ if (Entry.clipboard === null) {
 } else {
     return Entry.clipboard.length;
 }
+}, 'basic_string_field')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('object_count', '오브젝트 개수', {
+    color: c3,
+    outerline: o3,
+}, {
+    params: [],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+return Entry.container.getAllObjects().length;
+}, 'basic_string_field')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('scene_count', '장면 개수', {
+    color: c3,
+    outerline: o3,
+}, {
+    params: [],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+return Entry.scene.getScenes().length;
+}, 'basic_string_field')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('text-array', '%1', {
+			color: EntryStatic.colorSet.common.TRANSPARENT,
+            outerline: EntryStatic.colorSet.common.TRANSPARENT
+}, {
+    params: [
+        {
+            type: 'Text',
+            text: '배열',
+            color: EntryStatic.colorSet.common.TEXT,
+            align: 'right',
+        }
+    ],
+    def: [],
+    map: {},
+    class: 'text',
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const c4 = '#5e5e5e'
+const o4 = '#252525'
+addBlock('split_n', '배열 %1 를 구분자 %2 로 나눴을 때 %3 번째 항목의 값', {
+    color: c4,
+    outerline: o4,
+}, {
+    params: [
+        {
+            type: 'Block',
+            accept: 'string',
+        },
+        {
+            type: 'Block',
+            accept: 'string',
+        },
+        {
+            type: 'Block',
+            accept: 'string',
+        },
+    ],
+    def: [
+        {
+            type: 'text',
+            params: ["안녕, 엔트리"]
+        },
+        {
+            type: 'text',
+            params: [","],
+        },
+        {
+            type: 'text',
+            params: ["2"],
+        },
+    ],
+    map: {
+        CONTENT: 0,
+        SPLIT: 1,
+        NUM: 2,
+    },
+}, 'text', (sprite, script) => {
+const content = script.getValue('CONTENT', script);
+const split = script.getValue('SPLIT', script);
+const num = script.getValue('NUM', script);
+  const items = content
+    .split(split)
+    .map(item => item.trim())
+    .filter(item => item !== '');
+  if (num < 1 || num > items.length) {
+    return null;
+  }
+  return items[num - 1];
+}, 'basic_string_field')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('split_count', '배열 %1 에서 구분자 %2 로 나눴을때 항목의 개수', {
+    color: c4,
+    outerline: o4,
+}, {
+    params: [
+        {
+            type: 'Block',
+            accept: 'string',
+        },
+        {
+            type: 'Block',
+            accept: 'string',
+        },
+    ],
+    def: [
+        {
+            type: 'text',
+            params: ["안녕, 엔트리"]
+        },
+        {
+            type: 'text',
+            params: [","],
+        },
+    ],
+    map: {
+        CONTENT: 0,
+        SPLIT: 1,
+    },
+}, 'text', (sprite, script) => {
+const split = script.getValue('SPLIT', script);
+const content = script.getValue('CONTENT', script);
+  return content
+    .split(split)
+    .map(item => item.trim())
+    .filter(item => item !== '')
+    .length;
 }, 'basic_string_field')
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-made-of-fun', '%1', {
@@ -1202,8 +1496,8 @@ addBlock('no', '동작없음 %1', {
 })
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('open_maker_mypage', '제작자 마이페이지 열기 %1', {
-    color: 'rgb(0, 0, 0)',
-    outerline: 'rgb(32, 32, 32)',
+    color: '#000000',
+    outerline: '#202020',
 }, {
     params: [
         {
@@ -1278,6 +1572,7 @@ Entry.staticBlocks.push({
         'refresh_page',
         'ascii',
         'trim',
+        'prompt',
 
         'text-extend-entry-functions',
 
@@ -1297,8 +1592,19 @@ Entry.staticBlocks.push({
         'stop',
         'pause',
         'full_screen',
+        'set_user_info',
+        'add_scene',
+        'add_varible',
+        'set_var',
         'project_id',
         'entry_clipboard_length',
+        'object_count',
+        'scene_count',
+
+        'text-array',
+
+        'split_n',
+        'split_count',
 
         'text-made-of-fun',
 
@@ -1319,17 +1625,16 @@ $('head').append(`<style> #entryCategoryMintBlocks
  border-bottom-left-radius: 6px; 
  margin-bottom: 1px; 
  } .entrySelectedCategory#entryCategoryMintBlocks 
-  { background-image: https://playentry.org/uploads/%EC%84%9C%EC%9A%B8%EB%AF%BC%ED%8A%B8%EC%B4%88%EC%BD%94_not_move.svg; 
+  { background-image: url(https://playentry.org/uploads/%EC%84%9C%EC%9A%B8%EB%AF%BC%ED%8A%B8%EC%B4%88%EC%BD%94_not_move.svg); 
 background-color: #15d8aeff;
 border-color: #21bb8dff;
 color: #ffffffff;
-}
-    } </style>
+} </style>
 `)
 $('#entryCategoryMintBlocks').append('민트블록')
 alert("민트블록 로딩 완료!");
 console.log('%c 민트블록 로딩 완료!', 'color: #15d8aeff; font-weight: bold; font-size: 50px; font-family: Arial;');
 console.log('%c 제작자: 서울민트초코', 'color: #15d8aeff; font-weight: bold; font-size: 20px; font-family: Arial;');
-Entry.aiAssistantEnable=true
+Entry.aiAssistantEnable=true;
 
 // d$.get('https://cdn.jsdelivr.net/gh/minirang/MintBlock/block.js')
