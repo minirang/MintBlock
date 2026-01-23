@@ -1457,6 +1457,107 @@ const content = script.getValue('CONTENT', script);
     .length;
 }, 'basic_string_field')
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('text-video', '%1', {
+			color: EntryStatic.colorSet.common.TRANSPARENT,
+            outerline: EntryStatic.colorSet.common.TRANSPARENT
+}, {
+    params: [
+        {
+            type: 'Text',
+            text: '영상 (실험적)',
+            color: EntryStatic.colorSet.common.TEXT,
+            align: 'right',
+        }
+    ],
+    def: [],
+    map: {},
+    class: 'text',
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const c5 = '#ccc91f'
+const o5 = '#a7a427'
+addBlock('play_video_on_youtube', '%1 ID의 유튜브 영상을 재생하기 %2', {
+    color: c5,
+    outerline: o5,
+}, {
+    params: [
+        {
+            type: 'Block',
+            accept: 'string',
+        },
+        {
+            type: 'Indicator',
+            img: 'block_icon/start_icon_hardwarelite.svg',
+            size: 11,
+        },
+    ],
+    def: [
+        {
+            type: 'text',
+            params: ["R_H-7CpWs-s"]
+        },
+    ],
+    map: {
+        CONTENT: 0,
+    },
+}, 'text', (sprite, script) => {
+const content = script.getValue('CONTENT', script);
+const canvas = document.querySelector('#entryCanvas');
+const parentElement = canvas.parentElement;
+if (canvas && parentElement) {
+  const youtubeIframe = document.createElement('iframe');
+  youtubeIframe.setAttribute('src', 'https://www.youtube.com/embed/' + content + '?autoplay=1&mute=1'); // Replace VIDEO_ID
+  youtubeIframe.setAttribute('frameborder', '0');
+  youtubeIframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+  youtubeIframe.setAttribute('allowfullscreen', '');
+  youtubeIframe.style.position = 'absolute';
+  youtubeIframe.style.top = '0';
+  youtubeIframe.style.left = '0';
+  youtubeIframe.style.zIndex = '10';
+  parentElement.appendChild(youtubeIframe);
+  const updateIframeSize = () => {
+    const canvasRect = canvas.getBoundingClientRect();
+    youtubeIframe.style.width = `${canvasRect.width}px`;
+    youtubeIframe.style.height = `${canvasRect.height}px`;
+  };
+  updateIframeSize();
+  const resizeObserver = new ResizeObserver(entries => {
+    for (let entry of entries) {
+      if (entry.target === canvas) {
+        updateIframeSize();
+      }
+    }
+  });
+  resizeObserver.observe(canvas);
+} else {
+  console.error("Canvas or its parent element not found.");
+}
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('destroy_video', '재생 취소하기 %1', {
+    color: c5,
+    outerline: o5,
+}, {
+    params: [
+        {
+            type: 'Indicator',
+            img: 'block_icon/start_icon_hardwarelite.svg',
+            size: 11,
+        },
+    ],
+    def: [],
+    map: {
+    },
+}, 'text', (sprite, script) => {
+const youtubeIframe = document.querySelector('iframe');
+if (youtubeIframe) {
+  youtubeIframe.src = ''; // Stops the video and clears the content
+  console.log('YouTube iframe src attribute cleared.');
+} else {
+  console.log('No YouTube iframe found.');
+}
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-made-of-fun', '%1', {
 			color: EntryStatic.colorSet.common.TRANSPARENT,
             outerline: EntryStatic.colorSet.common.TRANSPARENT
@@ -1656,6 +1757,11 @@ Entry.staticBlocks.push({
 
         'split_n',
         'split_count',
+
+        'text-video',
+
+        'play_video_on_youtube',
+        'destroy_video',
 
         'text-made-of-fun',
 
