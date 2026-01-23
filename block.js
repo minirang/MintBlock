@@ -1511,7 +1511,7 @@ if (canvas && parentElement) {
   youtubeIframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
   youtubeIframe.setAttribute('allowfullscreen', '');
   youtubeIframe.style.position = 'absolute';
-  youtubeIframe.style.top = '0';
+  youtubeIframe.style.top = '-10';
   youtubeIframe.style.left = '0';
   youtubeIframe.style.zIndex = '10';
   parentElement.appendChild(youtubeIframe);
@@ -1552,6 +1552,11 @@ addBlock('destroy_video', '재생 취소하기 %1', {
 const youtubeIframe = document.querySelector('iframe');
 if (youtubeIframe) {
   youtubeIframe.src = ''; // Stops the video and clears the content
+  const canvas = document.getElementById('entryCanvas');
+  const iframe = canvas?.nextElementSibling;
+  if (iframe && iframe.tagName === 'IFRAME') {
+    iframe.remove();
+  }
   console.log('YouTube iframe src attribute cleared.');
 } else {
   console.log('No YouTube iframe found.');
