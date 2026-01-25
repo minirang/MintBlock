@@ -1624,7 +1624,7 @@ addBlock('open_maker_mypage', '제작자 마이페이지 열기 %1', {
     params: [
         {
             type: 'Indicator',
-            img: 'block_icon/hardware_icon.svg',
+            img: '../../../uploads/서울민트초코_not_move.svg',
             size: 11,
         },
     ],
@@ -1641,7 +1641,7 @@ addBlock('helpers_aqu3180', '도움을 주신 분: aqu3180님 %1', {
     params: [
         {
             type: 'Indicator',
-            img: 'block_icon/start_icon_play.svg',
+            img: '../../../uploads/logo.svg',
             size: 11,
         },
     ],
@@ -1767,6 +1767,7 @@ Entry.staticBlocks.push({
 
         'play_video_on_youtube',
         'destroy_video',
+        'pause_video',
 
         'text-made-of-fun',
 
