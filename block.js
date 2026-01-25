@@ -561,8 +561,13 @@ addBlock('copy_text', '%1 복사하기 %2', {
     },
 }, 'text', (sprite, script) => {
 const content = script.getValue('CONTENT', script);
-navigator.clipboard.writeText(content);
-alert('텍스트가 복사되었습니다: ' + content);
+navigator.clipboard.writeText(content)
+  .then(() => {
+    alert('텍스트가 복사되었습니다: ' + content);
+  })
+  .catch(() => {
+    alert('복사에 실패했습니다.');
+  });
 })
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('edit_page_title', '페이지 제목을 %1로 바꾸기 %2', {
@@ -954,8 +959,8 @@ addBlock('move_timer', '초시계 위치의 X를 %1 로 Y를 %2 (으)로 정하�
     ],
     def: [],
     map: {
-        X: 1,
-        Y: 2,
+        X: 0,
+        Y: 1,
     },
 }, 'text', (sprite, script) => {
 const x = script.getValue('X', script);
@@ -1606,7 +1611,13 @@ addBlock('pause_video', '영상 일시정지하기 %1', {
     def: [],
     map: {},
 }, 'text', (sprite, script) => {
-window.ytPlayer.pauseVideo();
+if (window.ytPlayer && window.ytPlayerReady) {
+  window.ytPlayer.pauseVideo();
+}
+else {
+  Entry.toast.alert('경고', '영상 로드 후 사용해주세요.')
+  Entry.engine.toggleStop();
+}
 })
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('proceed_video', '영상 계속 틀기 %1', {
@@ -1623,7 +1634,13 @@ addBlock('proceed_video', '영상 계속 틀기 %1', {
     def: [],
     map: {},
 }, 'text', (sprite, script) => {
-window.ytPlayer.playVideo();
+if (window.ytPlayer && window.ytPlayerReady) {
+  window.ytPlayer.playVideo();
+}
+else {
+  Entry.toast.alert('경고', '영상 로드 후 사용해주세요.')
+  Entry.engine.toggleStop();
+}
 })
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('move_video_second', '영상 %1 초로 이동하기 %2', {
@@ -1652,7 +1669,13 @@ addBlock('move_video_second', '영상 %1 초로 이동하기 %2', {
     },
 }, 'text', (sprite, script) => {
 const content = script.getValue('CONTENT', script);
-window.ytPlayer.seekTo(content)
+if (window.ytPlayer && window.ytPlayerReady) {
+  window.ytPlayer.seekTo(content)
+}
+else {
+  Entry.toast.alert('경고', '영상 로드 후 사용해주세요.')
+  Entry.engine.toggleStop();
+}
 })
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('mute_or_unmute_video', '영상 %1 하기 %2', {
@@ -1664,10 +1687,10 @@ addBlock('mute_or_unmute_video', '영상 %1 하기 %2', {
             type: 'Dropdown',
             options: [
                 ['음소거', 'mute'],
-                ['소리', 'unMute'],
+                ['음소거 해제', 'unMute'],
             ],
             fontSize: 11,
-            arrowColor: '#27aa7eff',
+            arrowColor: '#c4c119',
             value: 'mute'
         },
         {
@@ -1682,7 +1705,12 @@ addBlock('mute_or_unmute_video', '영상 %1 하기 %2', {
     },
 }, 'text', (sprite, script) => {
 const type = script.getValue('TYPE', script);
-window.ytPlayer[type]();
+if (type === 'mute') {
+    window.ytPlayer.mute();
+}
+else {
+    window.ytPlayer.unMute();
+}
 })
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('video_opacity', '영상 투명도를 %1 % 로 정하기 %2', {
@@ -1711,11 +1739,22 @@ addBlock('video_opacity', '영상 투명도를 %1 % 로 정하기 %2', {
     },
 }, 'text', (sprite, script) => {
 const content = script.getValue('CONTENT', script);
-const canvas = getElementById('entry-youtube-iframe');
-if (iframe) {
+const canvas = document.getElementById('entry-youtube-iframe');
+if (canvas) {
   canvas.style.opacity = content / 100;
 }
 })
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('is_mute', '영상이 음소거 되있는가?', {
+    color: c5,
+    outerline: o5,
+}, {
+    params: [],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+return window.ytPlayer.isMuted()
+}, 'basic_boolean_field')
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-iframe', '%1', {
 			color: EntryStatic.colorSet.common.TRANSPARENT,
@@ -1850,6 +1889,23 @@ const iframe = document.getElementById('entry-iframe');
 if (iframe) {
   iframe.style.opacity = content / 100;
 }
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('reload_iframe_page', 'iframe 안에 페이지 새로고침하기 %1', {
+    color: c6,
+    outerline: o6,
+}, {
+    params: [
+        {
+            type: 'Indicator',
+            img: '../../../uploads/서울민트초코_not_move.svg',
+            size: 11,
+        },
+    ],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+document.getElementById("entry-iframe").contentWindow.location.reload();
 })
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-made-of-fun', '%1', {
@@ -2061,12 +2117,14 @@ Entry.staticBlocks.push({
         'move_video_second',
         'mute_or_unmute_video',
         'video_opacity',
+        'is_mute',
 
         'text-iframe',
 
         'make_iframe',
         'remove_iframe',
         'iframe_opacity',
+        'reload_iframe_page',
 
         'text-made-of-fun',
 
