@@ -907,6 +907,19 @@ if (Entry.scene.selectedScene.id === type) {
 }
 }, 'basic_boolean_field')
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('timer_name', '초시계 이름', {
+    color: c2,
+    outerline: o2,
+}, {
+    params: [],
+    def: [],
+    map: {
+        NAME: 0,
+    },
+}, 'text', (sprite, script) => {
+return Entry.engine.projectTimer.name_
+}, 'basic_string_field')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('set_timer_name', '초시계 이름을 %1 로 정하기 %2', {
     color: c2,
     outerline: o2,
@@ -930,7 +943,7 @@ addBlock('set_timer_name', '초시계 이름을 %1 로 정하기 %2', {
 }, 'text', (sprite, script) => {
 const name = script.getValue('NAME', script);
 Entry.engine.projectTimer.setName(name);
-},)
+})
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('move_timer', '초시계 위치의 X를 %1 로 Y를 %2 (으)로 정하기 %3', {
     color: c2,
@@ -963,7 +976,8 @@ const x = script.getValue('X', script);
 const y = script.getValue('Y', script);
 Entry.engine.projectTimer.setX(x);
 Entry.engine.projectTimer.setY(y * -1);
-},)////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('move_variables', '변수 %1를 X %2 Y %3 위치로 옮기기 %4', {
     color: c2,
     outerline: o2,
@@ -2070,6 +2084,7 @@ Entry.staticBlocks.push({
         'get_dummy_blocks',
         'entry_toast',
         'if_scene_is',
+        'timer_name',
         'set_timer_name',
         'move_timer',
         'move_variables',
