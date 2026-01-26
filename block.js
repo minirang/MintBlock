@@ -1363,6 +1363,52 @@ addBlock('scene_count', '장면 개수', {
 return Entry.scene.getScenes().length;
 }, 'basic_string_field')
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('is_positive_or_nagative', '%1 이 %2 인가?', {
+    color: c3,
+    outerline: o3,
+}, {
+    params: [
+        {
+            type: 'Block',
+            accept: 'string'
+        },
+        {
+            type: 'Dropdown',
+            options: [
+                ['음수', 'nagative'],
+                ['양수', 'positive'],
+            ],
+            fontSize: 11,
+            arrowColor: '#8f3c15',
+            value: 'nagative'
+        },
+    ],
+    def: [],
+    map: {
+        CONTENT: 0,
+        TYPE: 1,
+    },
+}, 'text', (sprite, script) => {
+const content = script.getValue('CONTENT', script);
+const type = script.getValue('TYPE', script);
+if (type === 'positive') {
+    if (content > 0) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+else {
+    if (content < 0) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+}, 'basic_boolean_field')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-array', '%1', {
   color: EntryStatic.colorSet.common.TRANSPARENT,
 }, {
@@ -1966,6 +2012,21 @@ addBlock('no', '동작없음 %1', {
 }, 'text', (sprite, script) => {
 })
 //////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('memo', '메모: %1   ', {
+    color: '#a0a0a0',
+    outerline: '#222222',
+}, {
+    params: [
+        {
+            type: 'TextInput',
+            value: '주석',
+        },
+    ],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+})
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('open_maker_mypage', '제작자 마이페이지 열기 %1', {
     color: '#000000',
     outerline: '#202020',
@@ -2104,6 +2165,7 @@ Entry.staticBlocks.push({
         'entry_clipboard_length',
         'object_count',
         'scene_count',
+        'is_positive_or_nagative',
 
         'text-array',
 
@@ -2132,6 +2194,7 @@ Entry.staticBlocks.push({
 
         'cute_block',
         'no',
+        'memo',
         'open_maker_mypage',
         'helpers_aqu3180',
         'helpers_경찰악어씨',
