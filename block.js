@@ -1115,11 +1115,21 @@ addBlock('text-project', '%1', {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const c3 = '#c07b20';
 const o3 = '#866b20';
-addBlock('stop', '정지하기 %1', {
+addBlock('stop_or_pause', '작품 %1 하기 %2', {
     color: c3,
     outerline: o3,
 }, {
     params: [
+        {
+            type: 'Dropdown',
+            options: [
+                ['정지', 'Stop'],
+                ['일시정지', 'Pause'],
+            ],
+            fontSize: 11,
+            arrowColor: '#8f3c15',
+            value: 'Stop'
+        },
         {
             type: 'Indicator',
             img: 'block_icon/start_icon_play.svg',
@@ -1127,27 +1137,18 @@ addBlock('stop', '정지하기 %1', {
         },
     ],
     def: [],
-    map: {},
+    map: {
+        TYPE: 0,
+    },
 }, 'text', (sprite, script) => {
-Entry.engine.toggleStop()
+const type = script.getValue('TYPE', script);
+if (type === 'stop') {
+    Entry.engine.toggleStop();
+}
+else {
+    Entry.engine.togglePause();
+}
 }, 'basic_without_next')
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-addBlock('pause', '일시정지하기 %1', {
-    color: c3,
-    outerline: o3,
-}, {
-    params: [
-        {
-            type: 'Indicator',
-            img: 'block_icon/start_icon_play.svg',
-            size: 11,
-        },
-    ],
-    def: [],
-    map: {},
-}, 'text', (sprite, script) => {
-Entry.engine.togglePause()
-})
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('full_screen', '전체화면 토글 %1', {
     color: c3,
@@ -2094,8 +2095,7 @@ Entry.staticBlocks.push({
 
         'text-project',
 
-        'stop',
-        'pause',
+        'stop_or_pause',
         'full_screen',
         'set_user_info',
         'add_scene',
