@@ -1469,7 +1469,7 @@ addBlock('text-video', '%1', {
     params: [
         {
             type: 'Text',
-            text: '영상 (실험적)',
+            text: '영상',
             color: EntryStatic.colorSet.common.TEXT,
             align: 'right',
         }
@@ -1759,158 +1759,6 @@ if (window.ytPlayer && typeof window.ytPlayer.isMuted === 'function') {
 return false;
 }, 'basic_boolean_field')
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-addBlock('text-iframe', '%1', {
-			color: EntryStatic.colorSet.common.TRANSPARENT,
-            outerline: EntryStatic.colorSet.common.TRANSPARENT
-}, {
-    params: [
-        {
-            type: 'Text',
-            text: 'iframe',
-            color: EntryStatic.colorSet.common.TEXT,
-            align: 'right',
-        }
-    ],
-    def: [],
-    map: {},
-    class: 'text',
-})
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const c6 = '#501fc2'
-const o6 = '#48249b'
-addBlock('make_iframe', 'iframe으로 사이트 %1 열기 %2', {
-    color: c6,
-    outerline: o6,
-}, {
-    params: [
-        {
-            type: 'Block',
-            accept: 'string',
-        },
-        {
-            type: 'Indicator',
-            img: '../../../uploads/서울민트초코_not_move.svg',
-            size: 11,
-        },
-    ],
-    def: [
-        {
-            type: 'text',
-            params: ["https://playentry.org"]
-        },
-    ],
-    map: {
-        CONTENT: 0,
-    },
-}, 'text', (sprite, script) => {
-const content = script.getValue('CONTENT', script);
-const canvas = document.querySelector('#entryCanvas');
-const parentElement = canvas.parentElement;
-if (canvas && parentElement) {
-  const oldIframe = document.getElementById('entry-iframe');
-  if (oldIframe) {
-    oldIframe.remove();
-  }
-  const contentIframe = document.createElement('iframe');
-  contentIframe.id = 'entry-iframe';
-  contentIframe.src = content;
-  contentIframe.style.position = 'absolute';
-  contentIframe.style.top = '-10';
-  contentIframe.style.left = '0';
-  contentIframe.style.zIndex = '10';
-  contentIframe.style.border = '0';
-  parentElement.appendChild(contentIframe);
-  const updateIframeSize = () => {
-    const canvasRect = canvas.getBoundingClientRect();
-    contentIframe.style.width = `${canvasRect.width}px`;
-    contentIframe.style.height = `${canvasRect.height}px`;
-  };
-  updateIframeSize();
-  const resizeObserver = new ResizeObserver(entries => {
-    for (let entry of entries) {
-      if (entry.target === canvas) {
-        updateIframeSize();
-      }
-    }
-  });
-  resizeObserver.observe(canvas);
-} else {
-  console.error("Canvas or its parent element not found.");
-}
-})
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-addBlock('remove_iframe', 'iframe 제거하기 %1', {
-    color: c6,
-    outerline: o6,
-}, {
-    params: [
-        {
-            type: 'Indicator',
-            img: '../../../uploads/서울민트초코_not_move.svg',
-            size: 11,
-        },
-    ],
-    def: [],
-    map: {},
-}, 'text', (sprite, script) => {
-const youtubeIframe = document.getElementById('entry-iframe');
-if (youtubeIframe) {
-  youtubeIframe.remove();
-  console.log('iframe removed.');
-} else {
-  console.log('No iframe found.');
-}
-})
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-addBlock('iframe_opacity', 'iframe 투명도를 %1 % 로 정하기 %2', {
-    color: c6,
-    outerline: o6,
-}, {
-    params: [
-        {
-            type: 'Block',
-            accept: 'string'
-        },
-        {
-            type: 'Indicator',
-            img: '../../../uploads/서울민트초코_not_move.svg',
-            size: 11,
-        },
-    ],
-    def: [
-        {
-        type: 'text',
-        params: [50]
-        }
-    ],
-    map: {
-        CONTENT: 0,
-    },
-}, 'text', (sprite, script) => {
-const content = script.getValue('CONTENT', script);
-const iframe = document.getElementById('entry-iframe');
-if (iframe) {
-  iframe.style.opacity = content / 100;
-}
-})
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-addBlock('reload_iframe_page', 'iframe 안에 페이지 새로고침하기 %1', {
-    color: c6,
-    outerline: o6,
-}, {
-    params: [
-        {
-            type: 'Indicator',
-            img: '../../../uploads/서울민트초코_not_move.svg',
-            size: 11,
-        },
-    ],
-    def: [],
-    map: {},
-}, 'text', (sprite, script) => {
-document.getElementById("entry-iframe").contentWindow.location.reload();
-})
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-made-of-fun', '%1', {
 			color: EntryStatic.colorSet.common.TRANSPARENT,
             outerline: EntryStatic.colorSet.common.TRANSPARENT
@@ -2077,13 +1925,6 @@ Entry.staticBlocks.push({
         'video_opacity',
         'is_mute',
 
-        'text-iframe',
-
-        'make_iframe',
-        'remove_iframe',
-        'iframe_opacity',
-        'reload_iframe_page',
-
         'text-made-of-fun',
 
         'cute_block',
@@ -2112,5 +1953,3 @@ alert("민트블록 로딩 완료!");
 console.log('%c 민트블록 로딩 완료!', 'color: #15d8aeff; font-weight: bold; font-size: 50px; font-family: Arial;');
 console.log('%c 제작자: 서울민트초코', 'color: #15d8aeff; font-weight: bold; font-size: 20px; font-family: Arial;');
 Entry.aiAssistantEnable=true;
-
-// d$.get('https://cdn.jsdelivr.net/gh/minirang/MintBlock/safe_mintBlock.js')
