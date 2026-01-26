@@ -1142,7 +1142,7 @@ addBlock('stop_or_pause', '작품 %1 하기 %2', {
     },
 }, 'text', (sprite, script) => {
 const type = script.getValue('TYPE', script);
-if (type === 'stop') {
+if (type === 'Stop') {
     Entry.engine.toggleStop();
 }
 else {
