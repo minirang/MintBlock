@@ -339,22 +339,20 @@ const addBlock = (blockname, template, color, params, _class, func, skeleton = '
 }
 //여기까지가 스페셜 블록에서 퍼온거
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-addBlock('text-javascript-functions', '%1', {
-			color: EntryStatic.colorSet.common.TRANSPARENT,
-            outerline: EntryStatic.colorSet.common.TRANSPARENT,
+addBlock('text-javascript_functions', '%1', {
+  color: EntryStatic.colorSet.common.TRANSPARENT,
 }, {
-    params: [
-        {
-            type: 'Text',
-            text: '자바스크립트 기능들',
-            color: EntryStatic.colorSet.common.TEXT,
-            align: 'right',
-        },
-    ],
-    def: [],
-    map: {},
-    class: 'text',
-})
+  params: [
+    {
+        type: 'Text',
+        text: '자바스크립트 기능들',
+        align: 'center',
+        color: EntryStatic.colorSet.common.TEXT,
+    }
+],
+}, 'text', () => {
+
+}, 'basic_text')
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 const c1 = '#1fbb87ff';
 const o1 = '#3d836cff';
@@ -701,22 +699,20 @@ const content = script.getValue('CONTENT', script);
 return prompt(content);
 }, 'basic_string_field')
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-addBlock('text-extend-entry-functions', '%1', {
-			color: EntryStatic.colorSet.common.TRANSPARENT,
-            outerline: EntryStatic.colorSet.common.TRANSPARENT
+addBlock('text-extend_entry_functions', '%1', {
+  color: EntryStatic.colorSet.common.TRANSPARENT,
 }, {
-    params: [
-        {
-            type: 'Text',
-            text: '엔트리 확장 기능',
-            color: EntryStatic.colorSet.common.TEXT,
-            align: 'right',
-        }
-    ],
-    def: [],
-    map: {},
-    class: 'text',
-})
+  params: [
+    {
+        type: 'Text',
+        text: '엔트리 확장 기능들',
+        align: 'center',
+        color: EntryStatic.colorSet.common.TEXT,
+    }
+],
+}, 'text', () => {
+
+}, 'basic_text')
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const c2 = '#75a4e9';
 const o2 = '#457bcc';
@@ -911,6 +907,19 @@ if (Entry.scene.selectedScene.id === type) {
 }
 }, 'basic_boolean_field')
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('timer_name', '초시계 이름', {
+    color: c2,
+    outerline: o2,
+}, {
+    params: [],
+    def: [],
+    map: {
+        NAME: 0,
+    },
+}, 'text', (sprite, script) => {
+return Entry.engine.projectTimer.name_
+}, 'basic_string_field')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('set_timer_name', '초시계 이름을 %1 로 정하기 %2', {
     color: c2,
     outerline: o2,
@@ -934,7 +943,7 @@ addBlock('set_timer_name', '초시계 이름을 %1 로 정하기 %2', {
 }, 'text', (sprite, script) => {
 const name = script.getValue('NAME', script);
 Entry.engine.projectTimer.setName(name);
-},)
+})
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('move_timer', '초시계 위치의 X를 %1 로 Y를 %2 (으)로 정하기 %3', {
     color: c2,
@@ -967,7 +976,8 @@ const x = script.getValue('X', script);
 const y = script.getValue('Y', script);
 Entry.engine.projectTimer.setX(x);
 Entry.engine.projectTimer.setY(y * -1);
-},)////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('move_variables', '변수 %1를 X %2 Y %3 위치로 옮기기 %4', {
     color: c2,
     outerline: o2,
@@ -1097,21 +1107,19 @@ Entry.console.clear();
 })
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-project', '%1', {
-			color: EntryStatic.colorSet.common.TRANSPARENT,
-            outerline: EntryStatic.colorSet.common.TRANSPARENT
+  color: EntryStatic.colorSet.common.TRANSPARENT,
 }, {
-    params: [
-        {
-            type: 'Text',
-            text: '작품',
-            color: EntryStatic.colorSet.common.TEXT,
-            align: 'right',
-        }
-    ],
-    def: [],
-    map: {},
-    class: 'text',
-})
+  params: [
+    {
+        type: 'Text',
+        text: '작품',
+        align: 'center',
+        color: EntryStatic.colorSet.common.TEXT,
+    }
+],
+}, 'text', () => {
+
+}, 'basic_text')
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const c3 = '#c07b20';
 const o3 = '#866b20';
@@ -1149,7 +1157,7 @@ else {
     Entry.engine.togglePause();
 }
 }, 'basic_without_next')
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('full_screen', '전체화면 토글 %1', {
     color: c3,
     outerline: o3,
@@ -1356,21 +1364,19 @@ return Entry.scene.getScenes().length;
 }, 'basic_string_field')
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-array', '%1', {
-			color: EntryStatic.colorSet.common.TRANSPARENT,
-            outerline: EntryStatic.colorSet.common.TRANSPARENT
+  color: EntryStatic.colorSet.common.TRANSPARENT,
 }, {
-    params: [
-        {
-            type: 'Text',
-            text: '배열',
-            color: EntryStatic.colorSet.common.TEXT,
-            align: 'right',
-        }
-    ],
-    def: [],
-    map: {},
-    class: 'text',
-})
+  params: [
+    {
+        type: 'Text',
+        text: '배열',
+        align: 'center',
+        color: EntryStatic.colorSet.common.TEXT,
+    }
+],
+}, 'text', () => {
+
+}, 'basic_text')
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const c4 = '#5e5e5e'
 const o4 = '#252525'
@@ -1464,21 +1470,19 @@ const content = script.getValue('CONTENT', script);
 }, 'basic_string_field')
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-video', '%1', {
-			color: EntryStatic.colorSet.common.TRANSPARENT,
-            outerline: EntryStatic.colorSet.common.TRANSPARENT
+  color: EntryStatic.colorSet.common.TRANSPARENT,
 }, {
-    params: [
-        {
-            type: 'Text',
-            text: '영상',
-            color: EntryStatic.colorSet.common.TEXT,
-            align: 'right',
-        }
-    ],
-    def: [],
-    map: {},
-    class: 'text',
-})
+  params: [
+    {
+        type: 'Text',
+        text: '영상',
+        align: 'center',
+        color: EntryStatic.colorSet.common.TEXT,
+    }
+],
+}, 'text', () => {
+
+}, 'basic_text')
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const c5 = '#ccc91f'
 const o5 = '#a7a427'
@@ -1760,22 +1764,20 @@ if (window.ytPlayer && typeof window.ytPlayer.isMuted === 'function') {
 return false;
 }, 'basic_boolean_field')
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-addBlock('text-made-of-fun', '%1', {
-			color: EntryStatic.colorSet.common.TRANSPARENT,
-            outerline: EntryStatic.colorSet.common.TRANSPARENT
+addBlock('text-made_of_fun', '%1', {
+  color: EntryStatic.colorSet.common.TRANSPARENT,
 }, {
-    params: [
-        {
-            type: 'Text',
-            text: '심심해서 만든 블록들',
-            color: EntryStatic.colorSet.common.TEXT,
-            align: 'right',
-        }
-    ],
-    def: [],
-    map: {},
-    class: 'text',
-})
+  params: [
+    {
+        type: 'Text',
+        text: '심심해서 만든 블록들',
+        align: 'center',
+        color: EntryStatic.colorSet.common.TEXT,
+    }
+],
+}, 'text', () => {
+
+}, 'basic_text')
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('cute_block', '%1    ', {
     color: '#1fbb87ff',
@@ -1864,10 +1866,10 @@ addBlock('helpers_경찰악어씨', '도움을 주신 분: 경찰악어씨 님 %
 }, 'text', (sprite, script) => {
 window.open('https://playentry.org/profile/683c3803cf1a83502cb03fa4', '_blank');
 })
-////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////
 Entry.staticBlocks.push({
     category: 'MintBlocks', blocks: [
-        'text-javascript-functions',
+        'text-javascript_functions',
 
         'console_log',
         'alert',
@@ -1882,13 +1884,14 @@ Entry.staticBlocks.push({
         'trim',
         'prompt',
 
-        'text-extend-entry-functions',
+        'text-extend_entry_functions',
 
         'convert-to-binary',
         'search_to_google',
         'get_dummy_blocks',
         'entry_toast',
         'if_scene_is',
+        'timer_name',
         'set_timer_name',
         'move_timer',
         'move_variables',
@@ -1925,7 +1928,7 @@ Entry.staticBlocks.push({
         'video_opacity',
         'is_mute',
 
-        'text-made-of-fun',
+        'text-made_of_fun',
 
         'cute_block',
         'no',
@@ -1949,7 +1952,5 @@ color: #ffffffff;
 } </style>
 `)
 $('#entryCategoryMintBlocks').append('민트블록')
-alert("민트블록 로딩 완료!");
 console.log('%c 민트블록 로딩 완료!', 'color: #15d8aeff; font-weight: bold; font-size: 50px; font-family: Arial;');
 console.log('%c 제작자: 서울민트초코', 'color: #15d8aeff; font-weight: bold; font-size: 20px; font-family: Arial;');
-Entry.aiAssistantEnable=true;
