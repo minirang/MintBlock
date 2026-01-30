@@ -493,7 +493,7 @@ if (type === 'encode') {
 }
 }, 'basic_string_field')
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-addBlock('open_url', 'open URL %1 %2', {
+addBlock('open_url', 'URL 열기 %1 %2 %3 로 열기 %4', {
     color: c1,
     outerline: o1,
 }, {
@@ -501,6 +501,26 @@ addBlock('open_url', 'open URL %1 %2', {
         {
             type: 'Block',
             accept: 'string',
+        },
+                {
+            type: 'Dropdown',
+            options: [
+                ['새탭에서', '_blank'],
+                ['바로', '_self'],
+            ],
+            fontSize: 11,
+            arrowColor: '#27aa7eff',
+            value: '_blank'
+        },
+        {
+            type: 'Dropdown',
+            options: [
+                ['noopener,noreferre', 'noopener,noreferre'],
+                ['normal', 'normal'],
+            ],
+            fontSize: 11,
+            arrowColor: '#27aa7eff',
+            value: 'normal'
         },
         {
             type: 'Indicator',
@@ -516,10 +536,19 @@ addBlock('open_url', 'open URL %1 %2', {
     ],
     map: {
         CONTENT: 0,
+        OPTION: 1,
+        TYPE: 2,
     },
 }, 'text', (sprite, script) => {
 const content = script.getValue('CONTENT', script);
-window.open(content, '_blank');
+const option = script.getValue('OPTION', script);
+const type = script.getValue('TYPE', script);
+if (type === 'noopener,noreferre') {
+    window.open(content, option, 'noopener,noreferre');
+}
+else {
+    window.open(content, option);
+}
 })
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('get_browser_type', '브라우저 종류값 %1', {
@@ -716,7 +745,7 @@ addBlock('text-extend_entry_functions', '%1', {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const c2 = '#75a4e9';
 const o2 = '#457bcc';
-addBlock('convert-to-binary', '%1을/를 이진수로 변환한 값', {
+addBlock('convert-to-binary', '%1 을/를 이진수로 변환한 값', {
     color: c2,
     outerline: o2,
 }, {
@@ -741,6 +770,100 @@ const content = script.getValue('CONTENT', script);
     return Array.from(encoder.encode(content))
         .map(b => b.toString(2).padStart(8, '0'))
         .join(' ');
+}, 'basic_string_field')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('power', '%1 의 %2 제곱', {
+    color: c2,
+    outerline: o2,
+}, {
+    params: [
+        {
+            type: 'Block',
+            accept: 'string',
+        },
+        {
+            type: 'Block',
+            accept: 'string',
+        },
+    ],
+    def: [
+        {
+            type: 'text',
+            params: [2]
+        },
+        {
+            type: 'text',
+            params: [4]
+        }
+    ],
+    map: {
+        BASE: 0,
+        EXPONENT: 1,
+    },
+}, 'text', (sprite, script) => {
+const base = script.getValue('BASE', script);
+const exponent = script.getValue('EXPONENT', script);
+return base ** exponent;
+}, 'basic_string_field')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('LCM_LCF', '%1 와 %2 의 %3', {
+    color: c2,
+    outerline: o2,
+}, {
+    params: [
+        {
+            type: 'Block',
+            accept: 'string',
+        },
+        {
+            type: 'Block',
+            accept: 'string',
+        },
+        {
+            type: 'Dropdown',
+            options: [
+                ['최소공배수', 'LCM'],
+                ['최대공약수', 'LCF'],
+            ],
+            fontSize: 11,
+            arrowColor: '#4375c0',
+            value: 'LCM'
+        },
+    ],
+    def: [
+        {
+            type: 'text',
+            params: [12]
+        },
+        {
+            type: 'text',
+            params: [6]
+        },
+    ],
+    map: {
+        NUM1: 0,
+        NUM2: 1,
+        TYPE: 2,
+    },
+}, 'text', (sprite, script) => {
+const num1 = parseInt(script.getValue('NUM1', script));
+const num2 = parseInt(script.getValue('NUM2', script));
+const type = script.getValue('TYPE', script);
+let x = num1;
+let y = num2;
+let temp;
+while (y !== 0) {
+  temp = x % y;
+  x = y;
+  y = temp;
+}
+let lcf = x;
+let lcm = (num1 * num2) / lcf;
+if (type === "LCM") {
+  return lcm;
+} else {
+  return lcf;
+}
 }, 'basic_string_field')
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('search_to_google', '구글에 %1 검색하기 %2', {
@@ -1408,6 +1531,51 @@ else {
     }
 }
 }, 'basic_boolean_field')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('open_entry_pages', '엔트리 %1 열기 %2', {
+    color: c3,
+    outerline: o3,
+}, {
+    params: [
+        {
+            type: 'Dropdown',
+            options: [
+                ['메인 페이지', 'https://playentry.org'],
+                ['작품만들기', 'https://playentry.org/ws/new'],
+                ['교과형 만들기', 'https://playentry.org/ws/new?type=practical_course'],
+                ['학습하기', 'https://playentry.org/learn'],
+                ['이야기', 'https://playentry.org/community/entrystory/'],
+                ['노팁', 'https://playentry.org/community/tips/list'],
+                ['묻답', 'https://playentry.org/community/notice/list/2'],
+                ['공지사항', 'https://playentry.org/community/notice/list/1'],
+                ['탐험하기', 'https://space.playentry.org'],
+                ['챌린지', 'https://playentry.org/challenge/dashboard'],
+                ['나의 성과', 'https://playentry.org/challenge/dashboard'],
+                ['학급', 'https://playentry.org/group'],
+                ['소개', 'https://playentry.org/about'],
+                ['다운로드', 'https://playentry.org/download'],
+                ['작품 공유하기', 'https://playentry.org/project/list/all?sort=published'],
+                ['10m proejct', 'https://playentry.org/10m_project'],
+                ['제건 ㅠㅠ', 'https://playentry.org/suggestion/'],
+            ],
+            fontSize: 11,
+            arrowColor: '#8f3c15',
+            value: 'https://playentry.org'
+        },
+        {
+            type: 'Indicator',
+            img: 'block_icon/start_icon_play.svg',
+            size: 11,
+        },
+    ],
+    def: [],
+    map: {
+        TYPE: 0,
+    },
+}, 'text', (sprite, script) => {
+const type = script.getValue('TYPE', script);
+window.open(type, '_blank')
+})
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-array', '%1', {
   color: EntryStatic.colorSet.common.TRANSPARENT,
@@ -2141,6 +2309,8 @@ Entry.staticBlocks.push({
         'text-extend_entry_functions',
 
         'convert-to-binary',
+        'power',
+        'LCM_LCF',
         'search_to_google',
         'get_dummy_blocks',
         'entry_toast',
@@ -2166,6 +2336,7 @@ Entry.staticBlocks.push({
         'object_count',
         'scene_count',
         'is_positive_or_nagative',
+        'open_entry_pages',
 
         'text-array',
 
