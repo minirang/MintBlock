@@ -771,7 +771,7 @@ const content = script.getValue('CONTENT', script);
         .map(b => b.toString(2).padStart(8, '0'))
         .join(' ');
 }, 'basic_string_field')
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('search_to_google', '구글에 %1 검색하기 %2', {
     color: c2,
     outerline: o2,
@@ -1150,9 +1150,11 @@ addBlock('text-calc', '%1', {
 
 }, 'basic_text')
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const c7 = '#eb87ad';
+const o7 = '#b95d81';
 addBlock('power', '%1 의 %2 제곱', {
-    color: c2,
-    outerline: o2,
+    color: c7,
+    outerline: o7,
 }, {
     params: [
         {
@@ -1185,8 +1187,8 @@ return base ** exponent;
 }, 'basic_string_field')
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('LCM_LCF', '%1 와 %2 의 %3', {
-    color: c2,
-    outerline: o2,
+    color: c7,
+    outerline: o7,
 }, {
     params: [
         {
@@ -1204,7 +1206,7 @@ addBlock('LCM_LCF', '%1 와 %2 의 %3', {
                 ['최대공약수', 'LCF'],
             ],
             fontSize: 11,
-            arrowColor: '#4375c0',
+            arrowColor: '#da729a',
             value: 'LCM'
         },
     ],
@@ -1243,6 +1245,52 @@ if (type === "LCM") {
   return lcf;
 }
 }, 'basic_string_field')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('is_positive_or_nagative', '%1 이 %2 인가?', {
+    color: c7,
+    outerline: o7,
+}, {
+    params: [
+        {
+            type: 'Block',
+            accept: 'string'
+        },
+        {
+            type: 'Dropdown',
+            options: [
+                ['음수', 'nagative'],
+                ['양수', 'positive'],
+            ],
+            fontSize: 11,
+            arrowColor: '#da729a',
+            value: 'nagative'
+        },
+    ],
+    def: [],
+    map: {
+        CONTENT: 0,
+        TYPE: 1,
+    },
+}, 'text', (sprite, script) => {
+const content = script.getValue('CONTENT', script);
+const type = script.getValue('TYPE', script);
+if (type === 'positive') {
+    if (content > 0) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+else {
+    if (content < 0) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+}, 'basic_boolean_field')
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-project', '%1', {
   color: EntryStatic.colorSet.common.TRANSPARENT,
@@ -1533,52 +1581,6 @@ addBlock('scene_count', '장면 개수', {
 return Entry.scene.getScenes().length;
 }, 'basic_string_field')
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-addBlock('is_positive_or_nagative', '%1 이 %2 인가?', {
-    color: c3,
-    outerline: o3,
-}, {
-    params: [
-        {
-            type: 'Block',
-            accept: 'string'
-        },
-        {
-            type: 'Dropdown',
-            options: [
-                ['음수', 'nagative'],
-                ['양수', 'positive'],
-            ],
-            fontSize: 11,
-            arrowColor: '#8f3c15',
-            value: 'nagative'
-        },
-    ],
-    def: [],
-    map: {
-        CONTENT: 0,
-        TYPE: 1,
-    },
-}, 'text', (sprite, script) => {
-const content = script.getValue('CONTENT', script);
-const type = script.getValue('TYPE', script);
-if (type === 'positive') {
-    if (content > 0) {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-else {
-    if (content < 0) {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-}, 'basic_boolean_field')
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('open_entry_pages', '엔트리 %1 열기 %2', {
     color: c3,
     outerline: o3,
@@ -1863,11 +1865,21 @@ if (youtubeIframe) {
 }
 })
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-addBlock('pause_video', '영상 일시정지하기 %1', {
+addBlock('proceed_or_pause_video', '영상 %1 %2', {
     color: c5,
     outerline: o5,
 }, {
     params: [
+                {
+            type: 'Dropdown',
+            options: [
+                ['재생하기', 'playVideo'],
+                ['일시정지하기', 'pauseVideo'],
+            ],
+            fontSize: 11,
+            arrowColor: '#c4c119',
+            value: 'pauseVideo'
+        },
         {
             type: 'Indicator',
             img: 'block_icon/start_icon_hardwarelite.svg',
@@ -1875,33 +1887,13 @@ addBlock('pause_video', '영상 일시정지하기 %1', {
         },
     ],
     def: [],
-    map: {},
+    map: {
+        TYPE: 0,
+    },
 }, 'text', (sprite, script) => {
+const type = script.getValue('TYPE', script);
 if (window.ytPlayer && window.ytPlayerReady) {
-  window.ytPlayer.pauseVideo();
-}
-else {
-  Entry.toast.alert('경고', '영상 로드 후 사용해주세요.')
-  Entry.engine.toggleStop();
-}
-})
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-addBlock('proceed_video', '영상 계속 틀기 %1', {
-    color: c5,
-    outerline: o5,
-}, {
-    params: [
-        {
-            type: 'Indicator',
-            img: 'block_icon/start_icon_hardwarelite.svg',
-            size: 11,
-        },
-    ],
-    def: [],
-    map: {},
-}, 'text', (sprite, script) => {
-if (window.ytPlayer && window.ytPlayerReady) {
-  window.ytPlayer.playVideo();
+  window.ytPlayer[type]();
 }
 else {
   Entry.toast.alert('경고', '영상 로드 후 사용해주세요.')
@@ -2011,6 +2003,40 @@ if (canvas) {
 }
 })
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('video_volume', '영상 소리크기를 %1 (으)로 정하기 %2', {
+    color: c5,
+    outerline: o5,
+}, {
+    params: [
+        {
+            type: 'Block',
+            accept: 'string'
+        },
+        {
+            type: 'Indicator',
+            img: 'block_icon/start_icon_hardwarelite.svg',
+            size: 11,
+        },
+    ],
+    def: [
+        {
+        type: 'text',
+        params: [50]
+        }
+    ],
+    map: {
+        CONTENT: 0,
+    },
+}, 'text', (sprite, script) => {
+const content = script.getValue('CONTENT', script);
+if (window.ytPlayer && window.ytPlayerReady) {
+  window.ytPlayer.setVolume(content)}
+else {
+  Entry.toast.alert('경고', '영상 로드 후 사용해주세요.')
+  Entry.engine.toggleStop();
+}
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('is_mute', '영상이 음소거 되있는가?', {
     color: c5,
     outerline: o5,
@@ -2024,6 +2050,23 @@ if (window.ytPlayer && typeof window.ytPlayer.isMuted === 'function') {
 }
 return false;
 }, 'basic_boolean_field')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('get_video_current_time', '현재 영상 초 값', {
+    color: c5,
+    outerline: o5,
+}, {
+    params: [],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+if (window.ytPlayer && window.ytPlayerReady) {
+    return window.ytPlayer.getCurrentTime();
+}
+else {
+    Entry.toast.alert('경고', '영상 로드 후 사용해주세요.')
+    Entry.engine.toggleStop();
+}
+}, 'basic_string_field')
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-iframe', '%1', {
   color: EntryStatic.colorSet.common.TRANSPARENT,
@@ -2194,6 +2237,7 @@ Entry.staticBlocks.push({
 
         'power',
         'LCM_LCF',
+        'is_positive_or_nagative',
 
         'text-project',
 
@@ -2208,7 +2252,6 @@ Entry.staticBlocks.push({
         'entry_clipboard_length',
         'object_count',
         'scene_count',
-        'is_positive_or_nagative',
         'open_entry_pages',
 
         'text-array',
@@ -2220,12 +2263,15 @@ Entry.staticBlocks.push({
 
         'play_video_on_youtube',
         'destroy_video',
-        'pause_video',
-        'proceed_video',
+        'proceed_or_pause_video',
         'move_video_second',
         'mute_or_unmute_video',
         'video_opacity',
+        'video_volume',
         'is_mute',
+        'get_video_current_time',
+
+        'text-iframe',
 
         'text-made_of_fun',
 
@@ -2254,5 +2300,3 @@ color: #ffffffff;
 $('#entryCategoryMintBlocks').append('민트블록')
 console.log('%c 민트블록 로딩 완료!', 'color: #15d8aeff; font-weight: bold; font-size: 50px; font-family: Arial;');
 console.log('%c 제작자: 서울민트초코', 'color: #15d8aeff; font-weight: bold; font-size: 20px; font-family: Arial;');
-
-// d$.get('https://cdn.jsdelivr.net/gh/minirang/MintBlock/block.js')
