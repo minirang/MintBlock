@@ -1295,6 +1295,38 @@ else {
     Entry.engine.togglePause();
 }
 }, 'basic_without_next')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('pause_for_seconds', '%1 초동안 작품 일시정지하기 %2', {
+    color: c3,
+    outerline: o3,
+}, {
+    params: [
+        {
+            type: 'Block',
+            accept: 'string'
+        },
+        {
+            type: 'Indicator',
+            img: 'block_icon/start_icon_play.svg',
+            size: 11,
+        },
+    ],
+    def: [
+        {
+            type: 'text',
+            params: [2]
+        }
+    ],
+    map: {
+        CONTENT: 0,
+    },
+}, 'text', async (sprite, script) => {
+const content = script.getValue('CONTENT', script);
+const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+Entry.engine.togglePause();
+await wait(content * 1000);
+Entry.engine.toggleRun();
+})
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('full_screen', '전체화면 토글 %1', {
     color: c3,
@@ -2166,6 +2198,7 @@ Entry.staticBlocks.push({
         'text-project',
 
         'stop_or_pause',
+        'pause_for_seconds',
         'full_screen',
         'set_user_info',
         'add_scene',
