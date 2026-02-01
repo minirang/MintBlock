@@ -30,7 +30,7 @@ $.get('https://raw.githack.com/minirang/MintBlock/main/safe_mintBlock.js')
 단순 재미로만 사용해주세요.
 절대로 악용하지 마세요
 <br>
-    
+<img src="block_img.png">
 ---
 
 ![License](https://img.shields.io/badge/license-MIT-blue)
