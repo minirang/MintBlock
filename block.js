@@ -806,6 +806,17 @@ const detail = script.getValue('DETAIL', script);
 const selected = document.querySelector(content);
 selected.style[stylename] = detail;
 })
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('undefined', 'undefined', {
+    color: c1,
+    outerline: o1,
+}, {
+    params: [],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+return undefined;
+}, 'basic_string_field')
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-extend_entry_functions', '%1', {
   color: EntryStatic.colorSet.common.TRANSPARENT,
@@ -1442,51 +1453,6 @@ if (type === "LCM") {
 }
 }, 'basic_string_field')
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-addBlock('infinity', 'infinity', {
-    color: c7,
-    outerline: o7,
-}, {
-    params: [],
-    def: [],
-    map: {},
-}, 'text', (sprite, script) => {
-return Infinity;
-}, 'basic_string_field')
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-addBlock('-infinity', '-infinity', {
-    color: c7,
-    outerline: o7,
-}, {
-    params: [],
-    def: [],
-    map: {},
-}, 'text', (sprite, script) => {
-return -Infinity;
-}, 'basic_string_field')
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//그냥 null로 하면 엔트리가 null로 인식해서 블록에 안뜸 그래서 null에 공백 붙임
-addBlock('null ', 'null ', {
-    color: c7,
-    outerline: o7,
-}, {
-    params: [],
-    def: [],
-    map: {},
-}, 'text', (sprite, script) => {
-return null;
-}, 'basic_string_field')
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-addBlock('NaN', 'NaN', {
-    color: c7,
-    outerline: o7,
-}, {
-    params: [],
-    def: [],
-    map: {},
-}, 'text', (sprite, script) => {
-return NaN;
-}, 'basic_string_field')
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('is_positive_or_nagative', '%1 이 %2 인가?', {
     color: c7,
     outerline: o7,
@@ -1532,6 +1498,86 @@ else {
     }
 }
 }, 'basic_boolean_field')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('minus', '- %1', {
+    color: c7,
+    outerline: o7,
+}, {
+    params: [
+        {
+            type: 'Block',
+            accept: 'string'
+        },
+    ],
+    def: [
+        {
+            type: 'text',
+            params: [5]
+        }
+    ],
+    map: {
+        CONTENT: 0,
+    },
+}, 'text', (sprite, script) => {
+const content = script.getValue('CONTENT', script);
+return content * -1;
+}, 'basic_string_field')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('infinity', 'infinity', {
+    color: c7,
+    outerline: o7,
+}, {
+    params: [],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+return Infinity;
+}, 'basic_string_field')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('-infinity', '-infinity', {
+    color: c7,
+    outerline: o7,
+}, {
+    params: [],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+return -Infinity;
+}, 'basic_string_field')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('-0', '-0', {
+    color: c7,
+    outerline: o7,
+}, {
+    params: [],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+return -0;
+}, 'basic_string_field')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//그냥 null로 하면 엔트리가 null로 인식해서 블록에 안뜸 그래서 null에 공백 붙임
+addBlock('null ', 'null ', {
+    color: c7,
+    outerline: o7,
+}, {
+    params: [],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+return null;
+}, 'basic_string_field')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('NaN', 'NaN', {
+    color: c7,
+    outerline: o7,
+}, {
+    params: [],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+return NaN;
+}, 'basic_string_field')
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-project', '%1', {
   color: EntryStatic.colorSet.common.TRANSPARENT,
@@ -2997,6 +3043,7 @@ Entry.staticBlocks.push({
         'unicode',
         'prompt',
         'css',
+        'undefined',
 
         'text-extend_entry_functions',
 
@@ -3022,8 +3069,10 @@ Entry.staticBlocks.push({
         'power',
         'LCM_LCF',
         'is_positive_or_nagative',
+        'minus',
         'infinity',
         '-infinity',
+        '-0',
         'null ',
         'NaN',
 
