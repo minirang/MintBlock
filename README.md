@@ -8,7 +8,7 @@
 사용법: 
 1. 엔트리 작품만들기 페이지
 2. F12 ==> 콘솔
-3. 복사 붙여넣기
+3. 복사 붙여넣기 (붙여넣기가 안된다면 '붙여넣기 허용'이나 'allow pasting' 입력)
 ```javascript
 $.get('https://raw.githack.com/minirang/MintBlock/main/block.js')
 ```
