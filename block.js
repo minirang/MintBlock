@@ -1308,6 +1308,124 @@ if (canvas) {
 }
 })
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('canvas_size', '엔트리 캔버스 %1 를 %2 로 정하기 %3', {
+    color: c2,
+    outerline: o2,
+}, {
+    params: [
+        {
+            type: 'Dropdown',
+            options: [
+                ['가로', 'width'],
+                ['세로', 'height'],
+            ],
+            fontSize: 11,
+            arrowColor: '#4375c0',
+            value: 'width'
+        },
+        {
+            type: 'Block',
+            accept: 'string',
+            value: '400',
+        },
+        {
+            type: 'Indicator',
+            img: 'block_icon/flow_icon.svg',
+            size: 11,
+        },
+    ],
+    def: [],
+    map: {
+        TYPE: 0,
+        SIZE: 1,
+    },
+}, 'text', (sprite, script) => {
+const type = script.getValue('TYPE', script);
+const size = script.getValue('SIZE', script);
+Entry.canvas_[type] = size;
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('playground_zoom', '블록 조립소 화면 %1 하기 %2', {
+    color: c2,
+    outerline: o2,
+}, {
+    params: [
+        {
+            type: 'Dropdown',
+            options: [
+                ['확대', 'IN'],
+                ['축소', 'OUT'],
+                ['원래대로', 'RESET'],
+            ],
+            fontSize: 11,
+            arrowColor: '#4375c0',
+            value: 'IN'
+        },
+        {
+            type: 'Indicator',
+            img: 'block_icon/flow_icon.svg',
+            size: 11,
+        },
+    ],
+    def: [],
+    map: {
+        TYPE: 0,
+    },
+}, 'text', (sprite, script) => {
+const type = script.getValue('TYPE', script);
+const controller = Entry.getMainWS().zoomController, mode = controller.ZOOM_MODE;
+controller.zoomChange(mode[type]);
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('playground_background_image', '블록 조립소 화면 배경사진을 선택한 파일로 바꾸기 %1', {
+    color: c2,
+    outerline: o2,
+}, {
+    params: [
+        {
+            type: 'Indicator',
+            img: 'block_icon/flow_icon.svg',
+            size: 11,
+        },
+    ],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+let selectedImage = null;
+const fileInput = document.createElement('input');
+fileInput.type = 'file';
+fileInput.accept = 'image/*';
+fileInput.style.display = 'none';
+document.body.appendChild(fileInput);
+fileInput.addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = event => {
+        selectedImage = event.target.result;
+        document.querySelectorAll('.entryBlocklyWorkspace, .entryWorkspaceBoard')
+            .forEach(el => {
+                el.style.backgroundImage = `url("${selectedImage}")`;
+                el.style.backgroundSize = 'cover';
+                el.style.backgroundPosition = 'center';
+                el.style.backgroundRepeat = 'no-repeat';
+            });
+    };
+    reader.readAsDataURL(file);
+});
+fileInput.click();
+new MutationObserver(() => {
+    if (!selectedImage) return;
+    document.querySelectorAll('.entryBlocklyWorkspace, .entryWorkspaceBoard')
+        .forEach(el => {
+            el.style.backgroundImage = `url("${selectedImage}")`;
+            el.style.backgroundSize = 'cover';
+            el.style.backgroundPosition = 'center';
+            el.style.backgroundRepeat = 'no-repeat';
+        });
+}).observe(document.body, { childList: true, subtree: true });
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('get_block_by_blockname', '%1 이름의 블록 불러오기 %2', {
     color: c2,
     outerline: o2,
@@ -1577,6 +1695,28 @@ addBlock('NaN', 'NaN', {
     map: {},
 }, 'text', (sprite, script) => {
 return NaN;
+}, 'basic_string_field')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('maxvalue', 'Number.MAX_VALUE', {
+    color: c7,
+    outerline: o7,
+}, {
+    params: [],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+return Number.MAX_VALUE;
+}, 'basic_string_field')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('minvalue', 'Number.MIN_VALUE', {
+    color: c7,
+    outerline: o7,
+}, {
+    params: [],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+return Number.MIN_VALUE;
 }, 'basic_string_field')
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-project', '%1', {
@@ -3062,6 +3202,9 @@ Entry.staticBlocks.push({
         'is_it_true',
         'wait_while_true',
         'entry_canvas_color_reverse',
+        'canvas_size',
+        'playground_zoom',
+        'playground_background_image',
         'get_block_by_blockname',
 
         'text-calc',
@@ -3075,6 +3218,8 @@ Entry.staticBlocks.push({
         '-0',
         'null ',
         'NaN',
+        'maxvalue',
+        'minvalue',
 
         'text-project',
 
