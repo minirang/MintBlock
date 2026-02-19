@@ -1,3 +1,4 @@
+if (!confirm("민트블록을 허용하시겠습니까?")) throw new Error("취소됬습니다.");
 Entry.staticBlocks = [
     {
         category: 'start',
@@ -2932,6 +2933,35 @@ addBlock('key', 'index %1 번의 key 값', {
 const index = script.getValue('INDEX', script);
 return window.localStorage.key(index)
 }, 'basic_string_field')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('key_exists', '%1 값이 localStorage에 존재하는가?', {
+    color: c8,
+    outerline: o8,
+}, {
+    params: [
+        {
+            type: 'Block',
+            accept: 'string',
+        },
+    ],
+    def: [
+        {
+            type: 'text',
+            params: ['값 1']
+        },
+    ],
+    map: {
+        KEY: 0,
+    },
+}, 'text', (sprite, script) => {
+const key = script.getValue('KEY', script);
+if (window.localStorage.getItem(key) !== null) {
+    return true;
+}
+else {
+    return false;
+}
+}, 'basic_boolean_field')
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-fetch', '%1', {
   color: EntryStatic.colorSet.common.TRANSPARENT,
@@ -3395,6 +3425,7 @@ Entry.staticBlocks.push({
         'clear',
         'length',
         'key',
+        'key_exists',
 
         'text-fetch',
 
