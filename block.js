@@ -340,6 +340,21 @@ const addBlock = (blockname, template, color, params, _class, func, skeleton = '
 }
 //여기까지가 스페셜 블록에서 퍼온거
 //////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('text-info', '%1', {
+  color: EntryStatic.colorSet.common.TRANSPARENT,
+}, {
+  params: [
+    {
+        type: 'Text',
+        text: '민트블록 일반버전은 모든 기능을\n마음껏 사용할 수 있는 버전입니다.\n그만큼 위험할수 있으니 주의하세요.',
+        align: 'center',
+        color: EntryStatic.colorSet.common.TEXT,
+    }
+],
+}, 'text', () => {
+
+}, 'basic_text')
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-javascript_functions', '%1', {
   color: EntryStatic.colorSet.common.TRANSPARENT,
 }, {
@@ -3321,6 +3336,8 @@ if (confirm('자바스크립트 코드를 실행하시겠습니까? 실행한 �
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 Entry.staticBlocks.push({
     category: 'MintBlocks', blocks: [
+        'text-info',
+
         'text-javascript_functions',
 
         'console_log',
