@@ -1,3 +1,4 @@
+if (!confirm("민트블록을 허용하시겠습니까?")) throw new Error("취소됬습니다.");
 Entry.staticBlocks = [
     {
         category: 'start',
@@ -1308,6 +1309,124 @@ if (canvas) {
 }
 })
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('canvas_size', '엔트리 캔버스 %1 를 %2 로 정하기 %3', {
+    color: c2,
+    outerline: o2,
+}, {
+    params: [
+        {
+            type: 'Dropdown',
+            options: [
+                ['가로', 'width'],
+                ['세로', 'height'],
+            ],
+            fontSize: 11,
+            arrowColor: '#4375c0',
+            value: 'width'
+        },
+        {
+            type: 'Block',
+            accept: 'string',
+            value: '400',
+        },
+        {
+            type: 'Indicator',
+            img: 'block_icon/flow_icon.svg',
+            size: 11,
+        },
+    ],
+    def: [],
+    map: {
+        TYPE: 0,
+        SIZE: 1,
+    },
+}, 'text', (sprite, script) => {
+const type = script.getValue('TYPE', script);
+const size = script.getValue('SIZE', script);
+Entry.canvas_[type] = size;
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('playground_zoom', '블록 조립소 화면 %1 하기 %2', {
+    color: c2,
+    outerline: o2,
+}, {
+    params: [
+        {
+            type: 'Dropdown',
+            options: [
+                ['확대', 'IN'],
+                ['축소', 'OUT'],
+                ['원래대로', 'RESET'],
+            ],
+            fontSize: 11,
+            arrowColor: '#4375c0',
+            value: 'IN'
+        },
+        {
+            type: 'Indicator',
+            img: 'block_icon/flow_icon.svg',
+            size: 11,
+        },
+    ],
+    def: [],
+    map: {
+        TYPE: 0,
+    },
+}, 'text', (sprite, script) => {
+const type = script.getValue('TYPE', script);
+const controller = Entry.getMainWS().zoomController, mode = controller.ZOOM_MODE;
+controller.zoomChange(mode[type]);
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('playground_background_image', '블록 조립소 화면 배경사진을 선택한 파일로 바꾸기 %1', {
+    color: c2,
+    outerline: o2,
+}, {
+    params: [
+        {
+            type: 'Indicator',
+            img: 'block_icon/flow_icon.svg',
+            size: 11,
+        },
+    ],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+let selectedImage = null;
+const fileInput = document.createElement('input');
+fileInput.type = 'file';
+fileInput.accept = 'image/*';
+fileInput.style.display = 'none';
+document.body.appendChild(fileInput);
+fileInput.addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = event => {
+        selectedImage = event.target.result;
+        document.querySelectorAll('.entryBlocklyWorkspace, .entryWorkspaceBoard')
+            .forEach(el => {
+                el.style.backgroundImage = `url("${selectedImage}")`;
+                el.style.backgroundSize = '50px 50px';
+                el.style.backgroundPosition = '0 0';
+                el.style.backgroundRepeat = 'repeat';
+            });
+    };
+    reader.readAsDataURL(file);
+});
+fileInput.click();
+new MutationObserver(() => {
+    if (!selectedImage) return;
+    document.querySelectorAll('.entryBlocklyWorkspace, .entryWorkspaceBoard')
+        .forEach(el => {
+            el.style.backgroundImage = `url("${selectedImage}")`;
+            el.style.backgroundSize = '48px 48px';
+            el.style.backgroundPosition = '0 0';
+            el.style.backgroundRepeat = 'repeat';
+        });
+}).observe(document.body, { childList: true, subtree: true });
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('get_block_by_blockname', '%1 이름의 블록 불러오기 %2', {
     color: c2,
     outerline: o2,
@@ -1578,6 +1697,167 @@ addBlock('NaN', 'NaN', {
 }, 'text', (sprite, script) => {
 return NaN;
 }, 'basic_string_field')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('maxvalue', 'Number.MAX_VALUE', {
+    color: c7,
+    outerline: o7,
+}, {
+    params: [],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+return Number.MAX_VALUE;
+}, 'basic_string_field')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('minvalue', 'Number.MIN_VALUE', {
+    color: c7,
+    outerline: o7,
+}, {
+    params: [],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+return Number.MIN_VALUE;
+}, 'basic_string_field')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('pi', 'pi', {
+    color: c7,
+    outerline: o7,
+}, {
+    params: [],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+return Math.PI;
+}, 'basic_string_field')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('e', 'e', {
+    color: c7,
+    outerline: o7,
+}, {
+    params: [],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+return Math.E;
+}, 'basic_string_field')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('trig_functions', '%1 의 %2 (라디안)', {
+    color: c7,
+    outerline: o7,
+}, {
+    params: [
+        {
+            type: 'Block',
+            accept: 'string'
+        },
+        {
+            type: 'Dropdown',
+            options: [
+                ['사인', 'sin'],
+                ['코사인', 'cos'],
+                ['탄젠트', 'tan'],
+                ['코시컨트', 'csc'],
+                ['시컨트', 'sec'],
+                ['코탄젠트', 'cot'],
+                ['아크사인', 'arcsin'],
+                ['아크코사인', 'arccos'],
+                ['아크탄젠트', 'arctan'],
+                ['아크코시컨트', 'arccsc'],
+                ['아크시컨트', 'arcsec'],
+                ['아크코탄젠트', 'arccot'],
+                ['사인에이치', 'sinh'],
+                ['코사인에이치', 'cosh'],
+                ['탄젠트에이치', 'tanh'],
+                ['코시컨트에이치', 'csch'],
+                ['시컨트에이치', 'sech'],
+                ['코탄젠트에이치', 'coth'],
+                ['아르사인에이치', 'arsinh'],
+                ['아르코사인에이치', 'arcosh'],
+                ['아르탄젠트에이치', 'artanh'],
+                ['아르코시컨트에이치', 'arcsch'],
+                ['아르시컨트에이치', 'arsech'],
+                ['아르코탄젠트에이치', 'arcoth'],
+            ],
+            fontSize: 11,
+            arrowColor: '#da729a',
+            value: 'arcoth'
+        },
+    ],
+    def: [],
+    map: {
+        CONTENT: 0,
+        TYPE: 1,
+    },
+}, 'text', (sprite, script) => {
+const content = script.getValue('CONTENT', script);
+const type = script.getValue('TYPE', script);
+switch (type) {
+    case 'sin':
+        return Math.sin(content);
+    case 'cos':
+        return Math.cos(content);
+    case 'tan':
+        return Math.tan(content);
+    case 'csc':
+        return 1 / Math.sin(content);
+    case 'sec':
+        return 1 / Math.cos(content);
+    case 'cot':
+        return 1 / Math.tan(content);
+    case 'arcsin':
+        return Math.asin(content);
+    case 'arccos':
+        return Math.acos(content);
+    case 'arctan':
+        return Math.atan(content);
+    case 'arccsc':
+        return Math.asin(1 / content);
+    case 'arcsec':
+        return Math.acos(1 / content);
+    case 'arccot':
+        return Math.atan(1 / content);
+    case 'sinh':
+        return Math.sinh(content);
+    case 'cosh':
+        return Math.cosh(content);
+    case 'tanh':
+        return Math.tanh(content);
+    case 'csch':
+        return 1 / Math.sinh(content);
+    case 'sech':
+        return 1 / Math.cosh(content);
+    case 'coth':
+        return 1 / Math.tanh(content);
+    case 'arsinh':
+        return Math.asinh(content);
+    case 'arcosh':
+        return Math.acosh(content);
+    case 'artanh':
+        return Math.atanh(content);
+    case 'arcsch':
+        return Math.asinh(1 / content);
+    case 'arsech':
+        return Math.acosh(1 / content);
+    case 'arcoth':
+        return Math.atanh(1 / content);
+}
+}, 'basic_string_field')
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('text-info', '%1', {
+  color: EntryStatic.colorSet.common.TRANSPARENT,
+}, {
+  params: [
+    {
+        type: 'Text',
+        text: '민트블록 안전버전은 iframe, fetch, eval 블록이 제거되었으며,\nURL open 블록도 엔트리 리다이렉트 페이지를 사용했습니다.',
+        align: 'center',
+        color: EntryStatic.colorSet.common.TEXT,
+    }
+],
+}, 'text', () => {
+
+}, 'basic_text')
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-project', '%1', {
   color: EntryStatic.colorSet.common.TRANSPARENT,
@@ -2355,21 +2635,6 @@ else {
 }
 }, 'basic_string_field')
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-addBlock('text-iframe', '%1', {
-  color: EntryStatic.colorSet.common.TRANSPARENT,
-}, {
-  params: [
-    {
-        type: 'Text',
-        text: 'iframe',
-        align: 'center',
-        color: EntryStatic.colorSet.common.TEXT,
-    }
-],
-}, 'text', () => {
-
-}, 'basic_text')
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-localStorage', '%1', {
   color: EntryStatic.colorSet.common.TRANSPARENT,
 }, {
@@ -2533,21 +2798,35 @@ addBlock('key', 'index %1 번의 key 값', {
 const index = script.getValue('INDEX', script);
 return window.localStorage.key(index)
 }, 'basic_string_field')
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-addBlock('text-fetch', '%1', {
-  color: EntryStatic.colorSet.common.TRANSPARENT,
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('key_exists', '%1 값이 localStorage에 존재하는가?', {
+    color: c8,
+    outerline: o8,
 }, {
-  params: [
-    {
-        type: 'Text',
-        text: 'fetch',
-        align: 'center',
-        color: EntryStatic.colorSet.common.TEXT,
-    }
-],
-}, 'text', () => {
-
-}, 'basic_text')
+    params: [
+        {
+            type: 'Block',
+            accept: 'string',
+        },
+    ],
+    def: [
+        {
+            type: 'text',
+            params: ['값 1']
+        },
+    ],
+    map: {
+        KEY: 0,
+    },
+}, 'text', (sprite, script) => {
+const key = script.getValue('KEY', script);
+if (window.localStorage.getItem(key) !== null) {
+    return true;
+}
+else {
+    return false;
+}
+}, 'basic_boolean_field')
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-made_of_fun', '%1', {
   color: EntryStatic.colorSet.common.TRANSPARENT,
@@ -2669,6 +2948,8 @@ window.open('https://playentry.org/profile/683c3803cf1a83502cb03fa4', '_blank');
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 Entry.staticBlocks.push({
     category: 'MintBlocks', blocks: [
+        'text-info',
+        
         'text-javascript_functions',
 
         'console_log',
@@ -2704,6 +2985,9 @@ Entry.staticBlocks.push({
         'is_it_true',
         'wait_while_true',
         'entry_canvas_color_reverse',
+        'canvas_size',
+        'playground_zoom',
+        'playground_background_image',
         'get_block_by_blockname',
 
         'text-calc',
@@ -2717,6 +3001,11 @@ Entry.staticBlocks.push({
         '-0',
         'null ',
         'NaN',
+        'maxvalue',
+        'minvalue',
+        'pi',
+        'e',
+        'trig_functions',
 
         'text-project',
 
@@ -2758,6 +3047,7 @@ Entry.staticBlocks.push({
         'clear',
         'length',
         'key',
+        'key_exists',
 
         'text-made_of_fun',
 
@@ -2784,8 +3074,8 @@ color: #ffffffff;
 } </style>
 `)
 $('#entryCategoryMintBlocks').append('민트블록')
+alert("민트블록 로딩 완료!");
 console.log('%c 민트블록 로딩 완료!', 'color: #15d8aeff; font-weight: bold; font-size: 50px; font-family: Arial;');
 console.log('%c 제작자: 서울민트초코', 'color: #15d8aeff; font-weight: bold; font-size: 20px; font-family: Arial;');
 const canvas = document.querySelector('#entryCanvas');
 canvas.style.filter = 'invert(0%)';
-Entry.aiAssistantEnable=true;
