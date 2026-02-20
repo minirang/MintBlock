@@ -2219,7 +2219,7 @@ addBlock('insert_list', '%1 이름의 리스트에 %2 번째에 %3 항목 추가
         {
             type: 'Block',
             accept: 'string',
-            value: '1'
+            value: 1
         },
         {
             type: 'Block',
@@ -2303,7 +2303,7 @@ addBlock('change_viewmode', '%1 로 뷰모드 변경하기 %2', {
 }, {
     params: [
         {
-            type: 'dropDown',
+            type: 'Dropdown',
             options: [
                 ['블록', 'code'],
                 ['모양', 'picture'],
