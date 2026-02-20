@@ -803,11 +803,11 @@ addBlock('css', '요소 %1 을 선택하고 CSS %2 를 %3 으로 정하기 %4', 
         },
         {
             type: 'text',
-            params: ['opacity']
+            params: ['filter']
         },
         {
             type: 'text',
-            params: ['0.5']
+            params: ['blur(5px)']
         },
     ],
     map: {
@@ -1299,7 +1299,7 @@ const boolean = script.getValue('BOOLEAN', script);
 }
 })
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-addBlock('entry_canvas_color_reverse', '엔트리 캔버스 색상 반전하기 %1', {
+addBlock('canvas_color_reverse', '엔트리 캔버스 색상 반전하기 %1', {
     color: c2,
     outerline: o2,
 }, {
@@ -1321,6 +1321,61 @@ if (canvas) {
     else if (canvas.style.filter === 'invert(0%)'){
         canvas.style.filter = 'invert(100%)';
     }
+}
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('canvas_rotate', '%1 만큼 엔트리 캔버스 회전하기 %2', {
+    color: c2,
+    outerline: o2,
+}, {
+    params: [
+        {
+            type: 'Block',
+            accept: 'string',
+            value: '180',
+        },
+        {
+            type: 'Indicator',
+            img: 'block_icon/flow_icon.svg',
+            size: 11,
+        },
+    ],
+    def: [],
+    map: {
+        DEGREE: 0,
+    },
+}, 'text', (sprite, script) => {
+const degree = script.getValue('DEGREE', script);
+const canvas = document.querySelector('#entryCanvas');
+if (canvas) {
+    canvas.style.transform = `rotate(${degree}deg)`;}
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('canvas_opacity', '엔트리 캔버스 투명도를 %1 로 정하기 %2', {
+    color: c2,
+    outerline: o2,
+}, {
+    params: [
+        {
+            type: 'Block',
+            accept: 'string',
+            value: '50',
+        },
+        {
+            type: 'Indicator',
+            img: 'block_icon/flow_icon.svg',
+            size: 11,
+        },
+    ],
+    def: [],
+    map: {
+        opacity: 0,
+    },
+}, 'text', (sprite, script) => {
+const opacity = script.getValue('opacity', script);
+const canvas = document.querySelector('#entryCanvas');
+if (canvas) {
+    canvas.style.opacity = opacity / 100;
 }
 })
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1803,7 +1858,7 @@ addBlock('trig_functions', '%1 의 %2 (라디안)', {
         {
             type: 'text',
             params: [1]
-        },
+        }
     ],
     map: {
         CONTENT: 0,
@@ -2103,6 +2158,210 @@ addBlock('set_var', '변수 %1 를 %2 라고 정하기 %3', {
 const variable = script.getValue('VARIABLE', script)
 const content = script.getValue('CONTENT', script);
 Entry.variableContainer.getVariableByName(variable)?.setValue(content);
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('add_list', '%1 이름의 %2 리스트 추가하기 %3', {
+    color: c3,
+    outerline: o3,
+}, {
+    params: [
+        {
+            type: 'Block',
+            accept: 'string',
+            value: '서울민트초코'
+        },
+        {
+            type: 'Dropdown',
+            options: [
+                ['일반', 'standard'],
+                ['공유', 'share'],
+                ['실시간', 'live'],
+            ],
+            fontSize: 11,
+            arrowColor: '#8f3c15',
+            value: 'standard'
+        },
+        {
+            type: 'Indicator',
+            img: 'block_icon/start_icon_play.svg',
+            size: 11,
+        },
+    ],
+    def: [],
+    map: {
+        CONTENT: 0,
+        LIVE: 1,
+    },
+}, 'text', (sprite, script) => {
+const content = script.getValue('CONTENT', script);
+const live = script.getValue('LIVE', script);
+if (live === 'standard') {
+    Entry.variableContainer.addList({variableType: 'list', name: content});
+}
+else if (live === 'share') {
+    Entry.variableContainer.addList({variableType: 'list', name: content, isCloud: true});
+}
+else {
+    Entry.variableContainer.addList({variableType: 'list', name: content, isRealTime: true});
+}
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('insert_list', '%1 이름의 리스트에 %2 번째에 %3 항목 추가하기 %4', {
+    color: c3,
+    outerline: o3,
+}, {
+    params: [
+        {
+            type: 'Block',
+            accept: 'string',
+            value: '서울민트초코'
+        },
+        {
+            type: 'Block',
+            accept: 'string',
+            value: 1
+        },
+        {
+            type: 'Block',
+            accept: 'string',
+            value: 'Hi'
+        },
+        {
+            type: 'Indicator',
+            img: 'block_icon/start_icon_play.svg',
+            size: 11,
+        },
+    ],
+    def: [],
+    map: {
+        NAME: 0,
+        NUM: 1,
+        CONTENT: 2,
+    },
+}, 'text', (sprite, script) => {
+const name = script.getValue('NAME', script);
+const num = script.getValue('NUM', script);
+const content = script.getValue('CONTENT', script);
+Entry.variableContainer.lists_
+  .find(list => list.name_ === name)
+  .insertValue(num, content);
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('remove_list_value', '%1 이름의 리스트에 %2 번째 항목 삭제하기 %3', {
+    color: c3,
+    outerline: o3,
+}, {
+    params: [
+        {
+            type: 'Block',
+            accept: 'string',
+            value: '서울민트초코'
+        },
+        {
+            type: 'Block',
+            accept: 'string',
+            value: 1
+        },
+        {
+            type: 'Indicator',
+            img: 'block_icon/start_icon_play.svg',
+            size: 11,
+        },
+    ],
+    def: [],
+    map: {
+        NAME: 0,
+        NUM: 1,
+    },
+}, 'text', (sprite, script) => {
+const name = script.getValue('NAME', script);
+const num = script.getValue('NUM', script);
+Entry.variableContainer.lists_
+  .find(list => list.name_ === name)
+  .deleteValue(num);
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('add_signal', '%1 이름의 신호 만들기 %2', {
+    color: c3,
+    outerline: o3,
+}, {
+    params: [
+        {
+            type: 'Block',
+            accept: 'string',
+            value: '서울민트초코'
+        },
+        {
+            type: 'Indicator',
+            img: 'block_icon/start_icon_play.svg',
+            size: 11,
+        },
+    ],
+    def: [],
+    map: {
+        CONTENT: 0,
+    },
+}, 'text', (sprite, script) => {
+const content = script.getValue('CONTENT', script);
+Entry.variableContainer.addMessage({name: content});
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('add_function', '%1 이름의 함수 만들기 %2', {
+    color: c3,
+    outerline: o3,
+}, {
+    params: [
+        {
+            type: 'Block',
+            accept: 'string',
+            value: '서울민트초코'
+        },
+        {
+            type: 'Indicator',
+            img: 'block_icon/start_icon_play.svg',
+            size: 11,
+        },
+    ],
+    def: [],
+    map: {
+        CONTENT: 0,
+    },
+}, 'text', (sprite, script) => {
+const content = script.getValue('CONTENT', script);
+Entry.variableContainer.createFunction({name: content});
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('change_viewmode', '%1 로 뷰모드 변경하기 %2', {
+    color: c3,
+    outerline: o3,
+}, {
+    params: [
+        {
+            type: 'Dropdown',
+            options: [
+                ['블록', 'code'],
+                ['모양', 'picture'],
+                ['소리', 'sound'],
+                ['속성', 'variable'],
+            ],
+            fontSize: 11,
+            arrowColor: '#8f3c15',
+            value: 'code'
+        },
+        {
+            type: 'Indicator',
+            img: 'block_icon/start_icon_play.svg',
+            size: 11,
+        },
+    ],
+    def: [],
+    map: {
+        TYPE: 0,
+    },
+}, 'text', (sprite, script) => {
+const type = script.getValue('TYPE', script);
+// code, picture, sound, variable
+Entry.playground.changeViewMode(type);
 })
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('project_id', '작품 id', {
@@ -2954,7 +3213,7 @@ window.open('https://playentry.org/profile/683c3803cf1a83502cb03fa4', '_blank');
 Entry.staticBlocks.push({
     category: 'MintBlocks', blocks: [
         'text-info',
-        
+
         'text-javascript_functions',
 
         'console_log',
@@ -2989,8 +3248,10 @@ Entry.staticBlocks.push({
         'entry_console_clear',
         'is_it_true',
         'wait_while_true',
-        'entry_canvas_color_reverse',
+        'canvas_color_reverse',
         'canvas_size',
+        'canvas_rotate',
+        'canvas_opacity',
         'playground_zoom',
         'playground_background_image',
         'get_block_by_blockname',
@@ -3021,6 +3282,12 @@ Entry.staticBlocks.push({
         'add_scene',
         'add_varible',
         'set_var',
+        'add_list',
+        'add_signal',
+        'add_function',
+        'change_viewmode',
+        'insert_list',
+        'remove_list_value',
         'project_id',
         'entry_clipboard_length',
         'object_count',
