@@ -1,4 +1,4 @@
-if (!confirm("민트블록을 허용하시겠습니까?")) throw new Error("취소됬습니다.");
+if (!confirm("민트블록 안전버전을 허용하시겠습니까?")) throw new Error("취소됬습니다.");
 Entry.staticBlocks = [
     {
         category: 'start',
