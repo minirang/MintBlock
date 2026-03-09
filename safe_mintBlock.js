@@ -1,4 +1,4 @@
-if (!confirm("민트블록 안전버전을 허용하시겠습니까?")) throw new Error("취소됬습니다.");
+if (!confirm("민트블록을 허용하시겠습니까?")) throw new Error("취소됬습니다.");
 Entry.staticBlocks = [
     {
         category: 'start',
@@ -346,7 +346,7 @@ addBlock('text-info', '%1', {
   params: [
     {
         type: 'Text',
-        text: '민트블록 안전버전은 iframe, fetch, eval\n블록이 제거되었으며,URL open 블록도\n엔트리 리다이렉트 페이지를 사용했습니다.',
+        text: '민트블록 일반버전은 모든 기능을\n마음껏 사용할 수 있는 버전입니다.\n그만큼 위험할수 있으니 주의하세요.',
         align: 'center',
         color: EntryStatic.colorSet.common.TEXT,
     }
@@ -822,6 +822,167 @@ const detail = script.getValue('DETAIL', script);
 const selected = document.querySelector(content);
 selected.style[stylename] = detail;
 })
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('pointer_lock', '포인터 %1 %2', {
+    color: c1,
+    outerline: o1,
+}, {
+    params: [
+        {
+            type: 'Dropdown',
+            options: [
+                ['잠그기', 'lock'],
+                ['잠금해제', 'unlock'],
+            ],
+            fontSize: 11,
+            arrowColor: '#27aa7eff',
+            value: 'lock'
+        },
+        {
+            type: 'Indicator',
+            img: 'block_icon/start_icon.svg',
+            size: 11,
+        },
+    ],
+    def: [],
+    map: {
+        TYPE: 0
+    },
+}, 'text', (sprite, script) => {
+const type = script.getValue('TYPE', script);
+if (type === 'lock') {
+    document.body.requestPointerLock();
+} else {
+    document.exitPointerLock();
+}
+})
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('mouse_lock', '마우스를 %1 %2', {
+    color: c1,
+    outerline: o1,
+}, {
+    params: [
+        {
+            type: 'Dropdown',
+            options: [
+                ['클릭한 상태로 잠그기', 'lock'],
+                ['잠금해제', 'unlock'],
+            ],
+            fontSize: 11,
+            arrowColor: '#27aa7eff',
+            value: 'lock'
+        },
+        {
+            type: 'Indicator',
+            img: 'block_icon/start_icon.svg',
+            size: 11,
+        },
+    ],
+    def: [],
+    map: {
+        TYPE: 0
+    },
+}, 'text', (sprite, script) => {
+const type = script.getValue('TYPE', script);
+if (type === 'lock') {
+    mouseLockOn();
+} else {
+    mouseLockOff();
+}
+})
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// 필요한 코드들
+window.currentWheelAngle = 0;
+let wheelActive = false;
+let wheelTimeout;
+window.addEventListener('wheel', (event) => {
+  if (event.deltaX === 0 && event.deltaY === 0) return;
+  const radians = Math.atan2(event.deltaY, event.deltaX);
+  let degree = radians * (180 / Math.PI) + 90;
+  if (degree < 0) degree += 360;
+  if (degree >= 360) degree -= 360;
+  window.currentWheelAngle = Math.round(degree);
+  wheelActive = true;
+  clearTimeout(wheelTimeout);
+  wheelTimeout = setTimeout(() => {
+    wheelActive = false;
+  }, 50);
+}, { passive: true });
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('wheel', '%1 (으)로 스크롤되고 있는가?', {
+    color: c1,
+    outerline: o1,
+}, {
+    params: [
+        {
+            type: 'Dropdown',
+            options: [
+                ['왼쪽', 'left'],
+                ['오른쪽', 'right'],
+                ['위', 'up'],
+                ['아래', 'down'],
+            ],
+            fontSize: 11,
+            arrowColor: '#27aa7eff',
+            value: 'left'
+        },
+    ],
+    def: [],
+    map: {
+        TYPE: 0
+    },
+}, 'text', (sprite, script) => {
+if (!wheelActive) {
+  return false;
+}
+const type = script.getValue('TYPE', script);
+const a = window.currentWheelAngle;
+if (type === 'up') {
+if (a >= 315 || a <= 45) {
+  return true;
+} else {
+  return false;
+}
+}
+if (type === 'right') {
+if (a > 45 && a < 135) {
+  return true;
+} else {
+  return false;
+}
+}
+if (type === 'down') {
+if (a >= 135 && a <= 225) {
+  return true;
+} else {
+  return false;
+}
+}
+if (type === 'left') {
+if (a > 225 && a < 315) {
+  return true;
+} else {
+  return false;
+}
+}
+return false;
+}, 'basic_boolean_field')
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('wheel_angle', '현재 스크롤되는 방향값', {
+    color: c1,
+    outerline: o1,
+}, {
+    params: [],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+if (wheelActive) {
+  return window.currentWheelAngle;
+}
+else {
+  return undefined;
+}
+}, 'basic_string_field')
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('undefined', 'undefined', {
     color: c1,
@@ -832,6 +993,17 @@ addBlock('undefined', 'undefined', {
     map: {},
 }, 'text', (sprite, script) => {
 return undefined;
+}, 'basic_string_field')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('enter', '줄바꿈', {
+    color: c1,
+    outerline: o1,
+}, {
+    params: [],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+return '\n';
 }, 'basic_string_field')
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-extend_entry_functions', '%1', {
@@ -1022,7 +1194,7 @@ addBlock('if_scene_is', '만약 현재 장면이 %1 인가?', {
 }, {
     params: [
         {
-            type: 'DropdownDynamic', //이런것도 있었네 menuName을 입력하면 그에 맞게 자동으로 드롭다운 항목이 늘어나고 줄어드는 구조
+            type: 'DropdownDynamic', // menuName을 입력하면 그에 맞게 자동으로 드롭다운 항목이 늘어나고 줄어드는 구조
             value: null,
             menuName: 'scenes',
             fontSize: 11,
@@ -1810,6 +1982,17 @@ addBlock('e', 'e', {
     map: {},
 }, 'text', (sprite, script) => {
 return Math.E;
+}, 'basic_string_field')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('golden_ratio', '황금비', {
+    color: c7,
+    outerline: o7,
+}, {
+    params: [],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+return (1 + Math.sqrt(5)) / 2;
 }, 'basic_string_field')
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('trig_functions', '%1 의 %2 (라디안)', {
@@ -3092,6 +3275,436 @@ else {
 }
 }, 'basic_boolean_field')
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// 아이디어 제공: ywsa님
+
+// 이펙트 함수들
+const effects = {}
+
+function getActiveEffectsCount() {
+  return Object.keys(effects).length;
+}
+function chaos(elem) {
+  const el = document.querySelector(elem)
+  effects.chaos = setInterval(() => {
+    const x = (Math.random() - 0.5) * 200
+    const y = (Math.random() - 0.5) * 200
+    const r = (Math.random() - 0.5) * 360
+    const s = 0.5 + Math.random() * 1.5
+    el.style.transform = `translate(${x}px, ${y}px) rotate(${r}deg) scale(${s})`
+  }, 80)
+}
+function jellyText(elem) {
+  const el = document.querySelector(elem)
+  let t = 0
+  effects.jellyText = setInterval(() => {
+    t += 0.2
+    const sx = 1 + Math.sin(t) * 0.2
+    const sy = 1 + Math.cos(t) * 0.2
+    el.style.transform = `scale(${sx}, ${sy})`
+  }, 30)
+}
+function rotate3D(elem, speed = 1) {
+  const el = document.querySelector(elem)
+  let rx = 0
+  let ry = 0
+  el.style.transformStyle = "preserve-3d"
+  effects.rotate3D = setInterval(() => {
+    rx += 2 * speed
+    ry += 3 * speed
+    el.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg)`
+  }, 16)
+}
+function rainbowEffect(elem, speed = 1) {
+  const el = document.querySelector(elem)
+  let hue = 0
+  effects.rainbowEffect = setInterval(() => {
+    hue += 5 * speed
+    el.style.filter = `hue-rotate(${hue}deg) saturate(2)`
+  }, 16)
+}
+function float(elem) {
+  const el = document.querySelector(elem)
+  let t = 0
+  effects.float = setInterval(() => {
+    t += 0.05
+    const y = Math.sin(t) * 20
+    el.style.transform = `translateY(${y}px)`
+  }, 30)
+}
+function perspectiveTilt(elem) {
+  const el = document.querySelector(elem)
+  const handleMove = e => {
+    const x = e.clientX
+    const y = e.clientY
+    const w = window.innerWidth
+    const h = window.innerHeight
+    const dx = (x / w - 0.5) * 60
+    const dy = (y / h - 0.5) * -60
+    el.style.transform = `perspective(1000px) rotateY(${dx}deg) rotateX(${dy}deg)`
+  }
+  window.addEventListener("mousemove", handleMove)
+  effects.perspectiveTilt = {
+    stop: () => window.removeEventListener("mousemove", handleMove)
+  }
+}
+function blackHole(elem) {
+  const el = document.querySelector(elem)
+  let s = 1
+  let r = 0
+  effects.blackHole = setInterval(() => {
+    s *= 0.98
+    r += 20
+    el.style.transform = `rotate(${r}deg) scale(${s})`
+    el.style.opacity = s
+    if (s < 0.01) stopEffect("blackHole")
+  }, 30)
+}
+function strobe(elem) {
+  const el = document.querySelector(elem)
+  effects.strobe = setInterval(() => {
+    const visible = el.style.visibility === "hidden"
+    el.style.visibility = visible ? "visible" : "hidden"
+    el.style.filter = visible ? "invert(100%)" : "none"
+  }, 40)
+}
+function earthquake(elem) {
+  const el = document.querySelector(elem)
+  effects.earthquake = setInterval(() => {
+    const x = (Math.random() - 0.5) * 50
+    const y = (Math.random() - 0.5) * 50
+    document.el.style.transform = `translate(${x}px, ${y}px)`
+  }, 20)
+}
+function vhsGlitch(elem) {
+  const el = document.querySelector(elem)
+  effects.vhsGlitch = setInterval(() => {
+    const slice = Math.random() * 100
+    const offset = (Math.random() - 0.5) * 30
+    el.style.clipPath = `inset(${slice}% 0 ${100 - slice - 2}% 0)`
+    el.style.transform = `translateX(${offset}px) skew(${offset}deg)`
+    el.style.filter = `hue-rotate(${Math.random() * 360}deg) brightness(1.5)`
+  }, 40)
+}
+function meltDown(elem) {
+  const el = document.querySelector(elem)
+  let y = 0
+  effects.meltDown = setInterval(() => {
+    y += 2
+    el.style.transform = `skewX(${Math.sin(y / 10) * 20}deg) translateY(${y}px)`
+    el.style.filter = `blur(${y / 20}px)`
+    el.style.opacity = Math.max(0, 1 - y / 500)
+    if (y > 500) stopEffect("meltDown")
+  }, 20)
+}
+function pixelStorm(elem) {
+  const el = document.querySelector(elem)
+  effects.pixelStorm = setInterval(() => {
+    const shadow = Array.from({ length: 5 }, () =>
+      `${(Math.random() - 0.5) * 100}px ${(Math.random() - 0.5) * 100}px 0px hsl(${Math.random() * 360},100%,50%)`
+    ).join(",")
+    el.style.boxShadow = shadow
+    el.style.textShadow = shadow
+  }, 50)
+}
+function hyperZoom(elem) {
+  const el = document.querySelector(elem)
+  let t = 0
+  effects.hyperZoom = setInterval(() => {
+    t += 0.5
+    const s = 1 + Math.sin(t) * 5
+    el.style.transform = `scale(${Math.abs(s)})`
+    el.style.filter = `blur(${Math.abs(s)}px)`
+  }, 30)
+}
+function vortexPortal(elem) {
+  const el = document.querySelector(elem)
+  let r = 0
+  effects.vortexPortal = setInterval(() => {
+    r += 10
+    const d = Math.sin(r * 0.05) * 50
+    el.style.borderRadius = `${50 + d}% ${50 - d}% ${50 + d}% ${50 - d}%`
+    el.style.transform = `rotate(${r}deg) skew(${d / 2}deg) scale(${1 - Math.abs(d) / 200})`
+    el.style.filter = `hue-rotate(${r}deg) blur(${Math.abs(d) / 10}px)`
+  }, 20)
+}
+function mirrorDimension(elem) {
+  const el = document.querySelector(elem)
+  let t = 0
+  effects.mirrorDimension = setInterval(() => {
+    t += 1
+    const sx = Math.sin(t * 0.1) > 0 ? 1 : -1
+    const sy = Math.cos(t * 0.13) > 0 ? 1 : -1
+    el.style.transform = `scale(${sx}, ${sy}) skew(${Math.sin(t * 0.05) * 30}deg)`
+    el.style.filter = `hue-rotate(${t * 10}deg) contrast(2)`
+  }, 50)
+}
+function ghostTrail(elem) {
+  const el = document.querySelector(elem)
+  let t = 0
+  effects.ghostTrail = setInterval(() => {
+    t += 0.1
+    const shadows = []
+    for (let i = 1; i <= 5; i++) {
+      const x = Math.sin(t + i) * (i * 20)
+      const y = Math.cos(t + i) * (i * 20)
+      shadows.push(`${x}px ${y}px 0px rgba(0,255,255,${0.6 - i * 0.1})`)
+      shadows.push(`${-x}px ${-y}px 0px rgba(255,0,255,${0.6 - i * 0.1})`)
+    }
+    el.style.textShadow = shadows.join(",")
+    el.style.transform = `translate(${Math.sin(t) * 10}px, ${Math.cos(t) * 10}px)`
+  }, 30)
+}
+function pageShatter() {
+  const pieces = []
+  document.querySelectorAll("body *").forEach(el => {
+    if (el.tagName === "SCRIPT" || el.tagName === "STYLE") return
+    const rect = el.getBoundingClientRect()
+    const clone = el.cloneNode(true)
+    clone.style.cssText = `position:fixed;left:${rect.left}px;top:${rect.top}px;width:${rect.width}px;height:${rect.height}px;margin:0;pointer-events:none;z-index:9999;`
+    document.body.appendChild(clone)
+    pieces.push(clone)
+  })
+  effects.pageShatter = setInterval(() => {
+    pieces.forEach(p => {
+      const x = (Math.random() - 0.5) * 800
+      const y = (Math.random() - 0.5) * 800
+      const r = (Math.random() - 0.5) * 720
+      const s = 0.5 + Math.random() * 1.5
+      p.style.transform = `translate(${x}px, ${y}px) rotate(${r}deg) scale(${s})`
+    })
+  }, 120)
+}
+function cyberGlitch(elem) {
+  const el = document.querySelector(elem)
+  effects.cyberGlitch = setInterval(() => {
+    const x1 = Math.random() * 10 - 5
+    const r = Math.random() * 2 - 1
+    const top = Math.random() * 100
+    el.style.transform = `translateX(${x1}px) skewX(${r}deg)`
+    el.style.filter = `hue-rotate(${Math.random() * 90}deg) contrast(1.5)`
+    el.style.clipPath = `inset(${top}% 0 ${100 - top - 5}% 0)`
+    setTimeout(() => {
+      el.style.clipPath = "none"
+      el.style.transform = "none"
+    }, 30)
+  }, 60)
+}
+function neonPulse(elem) {
+  const el = document.querySelector(elem)
+  let t = 0
+  effects.neonPulse = setInterval(() => {
+    t += 0.1
+    const intensity = Math.abs(Math.sin(t)) * 25
+    const hue = (t * 50) % 360
+    el.style.filter = `drop-shadow(0 0 ${intensity}px hsl(${hue}, 100%, 60%)) brightness(1.2)`
+    el.style.transform = `scale(${1 + Math.sin(t) * 0.03})`
+  }, 40)
+}
+function stopEffect(name, elem) {
+  if (effects[name]) {
+    if (effects[name].stop) {
+      effects[name].stop();
+    } else {
+      clearInterval(effects[name]);
+    }
+    delete effects[name];
+  }
+  const el = document.querySelector(elem);
+  if (el) {
+    el.style.transform = "";
+    el.style.filter = "";
+    el.style.opacity = "";
+    el.style.clipPath = "";
+    el.style.textShadow = "";
+    el.style.boxShadow = "";
+    el.style.visibility = "";
+    el.style.borderRadius = "";
+  }
+}
+function stopAllEffects() {
+  for (const e in effects) stopEffect(e)
+  document.querySelectorAll("*").forEach(el => {
+    el.style.transform = ""
+    el.style.filter = ""
+    el.style.opacity = ""
+    el.style.clipPath = ""
+    el.style.textShadow = ""
+    el.style.boxShadow = ""
+    el.style.visibility = ""
+  })
+  document.body.style.transform = ""
+}
+
+const c11 = "#9de440";
+const o11 = "#8bc53e";
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('text-effect', '%1', {
+  color: EntryStatic.colorSet.common.TRANSPARENT,
+}, {
+  params: [
+    {
+        type: 'Text',
+        text: '이펙트',
+        align: 'center',
+        color: EntryStatic.colorSet.common.TEXT,
+    }
+],
+}, 'text', () => {
+
+}, 'basic_text')
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('start_effect', '%1 요소에 이펙트 %2 적용하기 %3', {
+    color: c11,
+    outerline: o11,
+}, {
+    params: [
+        {
+            type: 'Block',
+            accept: 'string',
+        },
+        {
+            type: 'Dropdown',
+            options: [
+                ['chaos', 'chaos'],
+                ['jellyText', 'jellyText'],
+                ['rotate3D', 'rotate3D'],
+                ['rainbowEffect', 'rainbowEffect'],
+                ['float', 'float'],
+                ['perspectiveTilt', 'perspectiveTilt'],
+                ['blackHole', 'blackHole'],
+                ['strobe', 'strobe'],
+                ['earthquake', 'earthquake'],
+                ['vhsGlitch', 'vhsGlitch'],
+                ['meltDown', 'meltDown'],
+                ['pixelStorm', 'pixelStorm'],
+                ['hyperZoom', 'hyperZoom'],
+                ['vortexPortal', 'vortexPortal'],
+                ['mirrorDimension', 'mirrorDimension'],
+                ['ghostTrail', 'ghostTrail'],
+                ['pageShatter', 'pageShatter'],
+                ['cyberGlitch', 'cyberGlitch'],
+                ['neonPulse', 'neonPulse']
+            ],
+            fontSize: 11,
+            arrowColor: '#75a13a',
+            value: 'rainbowEffect'
+        },
+        {
+            type: 'Indicator',
+            img: 'block_icon/start_icon_scene.svg',
+            size: 11,
+        },
+    ],
+    def: [
+        {
+            type: "text",
+            params: ["#entryCanvas"]
+        }
+    ],
+    map: {
+        CONTENT: 0,
+        TYPE: 1,
+    },
+}, 'text', (sprite, script) => {
+const content = script.getValue('CONTENT', script);
+const type = script.getValue('TYPE', script);
+if (typeof window[type] === 'function') {
+  window[type](content);
+} else {
+  console.error(type + " 함수가 정의되지 않았습니다.");
+}
+});
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('stop_effect', '요소 %1 의 이펙트 %2 제거하기 %3', {
+    color: c11,
+    outerline: o11,
+}, {
+    params: [
+        {
+            type: 'Block',
+            accept: 'string',
+        },
+        {
+            type: 'Dropdown',
+            options: [
+                ['chaos', 'chaos'],
+                ['jellyText', 'jellyText'],
+                ['rotate3D', 'rotate3D'],
+                ['rainbowEffect', 'rainbowEffect'],
+                ['float', 'float'],
+                ['perspectiveTilt', 'perspectiveTilt'],
+                ['blackHole', 'blackHole'],
+                ['strobe', 'strobe'],
+                ['earthquake', 'earthquake'],
+                ['vhsGlitch', 'vhsGlitch'],
+                ['meltDown', 'meltDown'],
+                ['pixelStorm', 'pixelStorm'],
+                ['hyperZoom', 'hyperZoom'],
+                ['vortexPortal', 'vortexPortal'],
+                ['mirrorDimension', 'mirrorDimension'],
+                ['ghostTrail', 'ghostTrail'],
+                ['pageShatter', 'pageShatter'],
+                ['cyberGlitch', 'cyberGlitch'],
+                ['neonPulse', 'neonPulse']
+            ],
+            fontSize: 11,
+            arrowColor: '#75a13a',
+            value: 'rainbowEffect'
+        },
+        {
+            type: 'Indicator',
+            img: 'block_icon/start_icon_scene.svg',
+            size: 11,
+        },
+    ],
+    def: [
+        {
+            type: "text",
+            params: ["#entryCanvas"]
+        }
+    ],
+    map: {
+        CONTENT: 0,
+        TYPE: 1,
+    },
+}, 'text', (sprite, script) => {
+const content = script.getValue('CONTENT', script);
+const type = script.getValue('TYPE', script);
+if (typeof window.stopEffect === 'function') {
+  window.stopEffect(type, content);
+} else {
+  console.error("stopEffect 함수가 정의되지 않았습니다.");
+}}
+);
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('stop_all_effect', '모든 이펙트 제거하기 %1', {
+    color: c11,
+    outerline: o11,
+}, {
+    params: [
+        {
+            type: 'Indicator',
+            img: 'block_icon/start_icon_scene.svg',
+            size: 11,
+        },
+    ],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+stopAllEffects();
+});
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('count_running_effect', '현재 실행중인 이펙트 개수값', {
+    color: c11,
+    outerline: o11,
+}, {
+    params: [],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+return getActiveEffectsCount();
+}, 'basic_string_field');
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-made_of_fun', '%1', {
   color: EntryStatic.colorSet.common.TRANSPARENT,
 }, {
@@ -3230,7 +3843,12 @@ Entry.staticBlocks.push({
         'unicode',
         'prompt',
         'css',
+        'pointer_lock',
+        'mouse_lock',
+        'wheel',
+        'wheel_angle',
         'undefined',
+        'enter',
 
         'text-extend_entry_functions',
 
@@ -3271,6 +3889,7 @@ Entry.staticBlocks.push({
         'minvalue',
         'pi',
         'e',
+        'golden_ratio',
         'trig_functions',
 
         'text-project',
@@ -3320,6 +3939,13 @@ Entry.staticBlocks.push({
         'length',
         'key',
         'key_exists',
+
+        'text-effect',
+
+        'start_effect',
+        'stop_effect',
+        'stop_all_effect',
+        'count_running_effet',
 
         'text-made_of_fun',
 
