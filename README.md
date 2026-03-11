@@ -33,8 +33,22 @@ $.get('https://raw.githack.com/minirang/MintBlock/main/safe_mintBlock.js')
 <br><br>
 단순 재미로만 사용해주시고, 
 절대로 악용하지 말아주세요.
-<br><br>
-<img src="block_img.png">
+
+---
+
+<img src="img/block_img1.png">
+<img src="img/block_img2.png">
+<img src="img/block_img3.png">
+<img src="img/block_img4.png">
+<img src="img/block_img5.png">
+<img src="img/block_img6.png">
+<img src="img/block_img7.png">
+<img src="img/block_img8.png">
+<img src="img/block_img9.png">
+<img src="img/block_img10.png">
+<img src="img/block_img11.png">
+<img src="img/block_img12.png">
+<img src="img/block_img13.png">
 
 ---
 
