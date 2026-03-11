@@ -3694,6 +3694,7 @@ const query = `
 const variables = {
   content: content
 };
+if (!confirm("작성할까요?")) throw new Error("취소됬습니다.");
 fetch("https://playentry.org/graphql", {
   method: "POST",
   headers: {
@@ -4986,5 +4987,3 @@ canvas.style.filter = 'invert(0%)';
 Entry.aiAssistantEnable=true;
 
 // $.get('https://cdn.jsdelivr.net/gh/minirang/MintBlock/block.js')
-
-
