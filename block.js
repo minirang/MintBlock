@@ -1,4 +1,5 @@
 if (!confirm("민트블록을 허용하시겠습니까?")) throw new Error("취소됬습니다.");
+console.time('로드 완료')
 Entry.staticBlocks = [
     {
         category: 'start',
@@ -4029,6 +4030,7 @@ const variables = {
     return arr;
   })()
 }
+if (!confirm("정말 바꿀까요?")) throw new Error("취소됬습니다.");
 fetch("https://playentry.org/graphql", {
   method: "POST",
   headers: {
@@ -4695,6 +4697,23 @@ addBlock('memo', '메모: %1   ', {
 }, 'text', (sprite, script) => {
 })
 //////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('like', '좋아요 유도 %1', {
+    color: '#ff2163',
+    outerline: '#da2057',
+}, {
+    params: [
+        {
+            type: 'Indicator',
+            img: '../../../uploads/n9/rt/thumb/n9rtv0wtkno9qhhs3euga2c94337hw2d.png',
+            size: 11,
+        },
+    ],
+    def: [],
+    map: {},
+}, 'text', (sprite, script) => {
+console.log("♡")
+})
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('open_maker_mypage', '제작자 마이페이지 열기 %1', {
     color: '#000000',
     outerline: '#202020',
@@ -4954,6 +4973,7 @@ Entry.staticBlocks.push({
         'cute_block',
         'no',
         'memo',
+        'like',
         'open_maker_mypage',
         'helpers_aqu3180',
         'helpers_경찰악어씨',
@@ -4979,11 +4999,26 @@ color: #ffffffff;
 } </style>
 `)
 $('#entryCategoryMintBlocks').append('민트블록')
+console.timeEnd('로드 완료')
 alert("민트블록 로딩 완료!");
+const style = "color: #00B6B1; font-weight: bold; line-height: 1.1; font-family: monospace;";
+
+console.log("%c       ********************", style);
+console.log("%c    ****-.....:****************", style);
+console.log("%c  ***:         .+*****************", style);
+console.log("%c **+.   .+:.    .+******************", style);
+console.log("%c**+.   .***+:   .********************", style);
+console.log("%c**+.   .**+:    .******************", style);
+console.log("%c **:    .      ..****************", style);
+console.log("%c  **+.       .-****************", style);
+console.log("%c    ***=----+****************", style);
+console.log("%c       ******", style);
+console.log("%c        ***", style);
+console.log("%c         *", style);
 console.log('%c 민트블록 로딩 완료!', 'color: #15d8aeff; font-weight: bold; font-size: 50px; font-family: Arial;');
 console.log('%c 제작자: 서울민트초코', 'color: #15d8aeff; font-weight: bold; font-size: 20px; font-family: Arial;');
 const canvas = document.querySelector('#entryCanvas');
 canvas.style.filter = 'invert(0%)';
-Entry.aiAssistantEnable=true;
+Entry.aiAssistantEnable = true;
 
 // $.get('https://cdn.jsdelivr.net/gh/minirang/MintBlock/block.js')
