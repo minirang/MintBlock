@@ -5021,4 +5021,4 @@ const canvas = document.querySelector('#entryCanvas');
 canvas.style.filter = 'invert(0%)';
 Entry.aiAssistantEnable = true;
 
-// $.get('https://cdn.jsdelivr.net/gh/minirang/MintBlock/block.js')
+// 콘솔 붙여넣기 한줄용: $.get('https://cdn.jsdelivr.net/gh/minirang/MintBlock/block.js')
