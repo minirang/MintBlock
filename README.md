@@ -33,6 +33,8 @@ $.get('https://raw.githack.com/minirang/MintBlock/main/safe_mintBlock.js')
 <br><br>
 단순 재미로만 사용해주시고, 
 절대로 악용하지 말아주세요.
+<br><br>
+또한 포크 시 되도록 discussion에 남겨주시기 바랍니다.
 
 ---
 <br>
