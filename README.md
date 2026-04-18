@@ -1,4 +1,7 @@
 # 🍀MintBlock
+
+---
+
 서울민트초코가 만든 엔트리 비공식 블록
 <br><br>
 엔트리 비공식 블록 최초 영상 기능 지원, 거의 모든 블록 정상 작동
@@ -6,8 +9,11 @@
 아마 엔트리에서 2번째로 비공식 블록중에 작동되는 블록이 가장 많을겁니다.
 <br><br>
 마지막 업데이트 시 블록 개수: 102개
-<br><br>
-사용법: 
+
+---
+
+# 사용법
+
 1. 엔트리 작품만들기 페이지
 2. F12 ==> 콘솔
 3. 복사 붙여넣기 (붙여넣기가 안된다면 '붙여넣기 허용'이나 'allow pasting' 입력)
@@ -21,6 +27,9 @@ $.get('https://raw.githack.com/minirang/MintBlock/main/safe_mintBlock.js')
 ```
 
 ---
+
+# 참고사항
+
 <br>
 참고로 스페셜 블록을 아주 일부 참고했습니다.
 <br>
@@ -37,8 +46,9 @@ $.get('https://raw.githack.com/minirang/MintBlock/main/safe_mintBlock.js')
 또한 포크 시 되도록 discussion에 남겨주시기 바랍니다.
 
 ---
-<br>
-블록 이미지들
+
+# 블록 이미지들
+
 <br><br>
 <img src="img/block_img1.png">
 <img src="img/block_img2.png">
