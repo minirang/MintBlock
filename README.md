@@ -49,7 +49,7 @@ $.get('https://raw.githack.com/minirang/MintBlock/main/safe_mintBlock.js')
 
 # 블록 이미지들
 
-<br><br>
+<br>
 <img src="img/block_img1.png">
 <img src="img/block_img2.png">
 <img src="img/block_img3.png">
