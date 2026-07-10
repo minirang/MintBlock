@@ -2804,7 +2804,7 @@ if (canvas && parentElement) {
   }
   const youtubeIframe = document.createElement('iframe');
   youtubeIframe.id = 'entry-youtube-iframe';
-  youtubeIframe.setAttribute('src', 'https://www.youtube.com/embed/' + content + '?autoplay=1&mute=1&enablejsapi=1');
+  youtubeIframe.setAttribute('src', 'https://www.youtube.com/embed/' + content + '?autoplay=1&mute=1&enablejsapi=1&origin=' + window.location.origin);
   youtubeIframe.setAttribute('frameborder', '0');
   youtubeIframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
   youtubeIframe.setAttribute('allowfullscreen', '');
