@@ -355,6 +355,23 @@ addBlock('text-info', '%1', {
 }, 'text', () => {
 
 }, 'basic_text')
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('clear_mintblock', '민트블록 해제하기 %1', {
+    color: '#000000',
+    outerline: '#202020',
+}, {
+    params: [
+        {
+            type: 'Indicator',
+            img: '../../../uploads/서울민트초코_not_move.svg',
+            size: 12,
+        },
+    ],
+    def: [],
+    map: {},
+}, 'text', async(sprite, script) => {
+Entry.playground.blockMenu.banCategory('MintBlocks')
+})
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-javascript_functions', '%1', {
   color: EntryStatic.colorSet.common.TRANSPARENT,
@@ -4846,6 +4863,8 @@ Entry.staticBlocks.push({
     category: 'MintBlocks', blocks: [
         'text-info',
 
+        'clear_mintblock',
+        
         'text-javascript_functions',
 
         'console_log',
