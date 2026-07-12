@@ -5116,7 +5116,7 @@ Entry.staticBlocks.push({
         // 실험용 블록들
         'double_loop_block_test',
         'loop_block_test',
-        'wrong_double_loop_block_test'
+        'wrong_double_loop_block_test',
 
         'text-dangerous_blocks',
 
