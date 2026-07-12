@@ -4995,6 +4995,7 @@ Entry.staticBlocks.push({
         'post_without_respond',
 
         'text-graphql',
+
         'write_entrystory',
         'change_nickname',
         'follow_user',
