@@ -3148,37 +3148,37 @@ addBlock('make_iframe', 'iframe으로 사이트 %1 열기 %2', {
 }, 'text', (sprite, script) => {
 const content = script.getValue('CONTENT', script);
 const canvas = document.querySelector('#entryCanvas');
-const parentElement = canvas.parentElement;
-if (canvas && parentElement) {
-  const oldIframe = document.getElementById('entry-iframe');
-  if (oldIframe) {
-    oldIframe.remove();
-  }
-  const contentIframe = document.createElement('iframe');
-  contentIframe.id = 'entry-iframe';
-  contentIframe.src = content;
-  contentIframe.style.position = 'absolute';
-  contentIframe.style.top = '-10';
-  contentIframe.style.left = '0';
-  contentIframe.style.zIndex = '10';
-  contentIframe.style.border = '0';
-  parentElement.appendChild(contentIframe);
-  const updateIframeSize = () => {
-    const canvasRect = canvas.getBoundingClientRect();
-    contentIframe.style.width = `${canvasRect.width}px`;
-    contentIframe.style.height = `${canvasRect.height}px`;
-  };
-  updateIframeSize();
-  const resizeObserver = new ResizeObserver(entries => {
-    for (let entry of entries) {
-      if (entry.target === canvas) {
-        updateIframeSize();
-      }
+if (canvas) {
+    const oldIframe = document.getElementById('entry-iframe');
+    if (oldIframe) {
+        oldIframe.remove();
     }
-  });
-  resizeObserver.observe(canvas);
+    const contentIframe = document.createElement('iframe');
+    contentIframe.id = 'entry-iframe';
+    contentIframe.src = content;
+    document.body.appendChild(contentIframe);
+    const updateIframeSize = () => {
+        const iframe = document.getElementById('entry-iframe');
+        if (iframe && canvas) {
+            const rect = canvas.getBoundingClientRect();
+            iframe.style.position = 'fixed';
+            iframe.style.width = `${rect.width}px`;
+            iframe.style.height = `${rect.height}px`;
+            iframe.style.top = `${rect.top}px`;
+            iframe.style.left = `${rect.left}px`;
+            iframe.style.zIndex = '9999';
+            iframe.style.border = '0';
+        }
+    };
+    updateIframeSize();
+    if (!window.iframeResizeObserver) {
+        window.iframeResizeObserver = new ResizeObserver(() => updateIframeSize());
+        window.iframeResizeObserver.observe(canvas);
+        window.addEventListener('resize', updateIframeSize);
+        window.addEventListener('scroll', updateIframeSize, true);
+    }
 } else {
-  console.error("Canvas or its parent element not found.");
+    console.error("Canvas not found.");
 }
 })
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
