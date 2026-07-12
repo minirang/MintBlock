@@ -4802,6 +4802,98 @@ addBlock('helpers_경찰악어씨', '도움을 주신 분: 경찰악어씨 님 %
 }, 'text', (sprite, script) => {
 window.open('https://playentry.org/profile/683c3803cf1a83502cb03fa4', '_blank');
 })
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('text-testing', '%1', {
+  color: EntryStatic.colorSet.common.TRANSPARENT,
+}, {
+  params: [
+    {
+        type: 'Text',
+        text: '테스트 중인 블록들',
+        align: 'center',
+        color: EntryStatic.colorSet.common.TEXT,
+    }
+],
+}, 'text', () => {
+
+}, 'basic_text')
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('double_loop_block_test', '이중 반복 블록 테스트 %1 %2', {
+    color: '#000',
+    outerline: '#fff',
+}, {
+    params: [
+        {
+            type: 'Indicator',
+            img: 'block_icon/start_icon_play.svg',
+            size: 11,
+        },
+        {
+            type: 'LineBreak'
+        }
+    ],
+    def: [
+        null,
+        null
+    ],
+    map: {},
+}, 'text', (sprite, script) => {
+
+}, 'basic_double_loop')
+Entry.block.double_loop_block_test.statements = JSON.parse(JSON.stringify(Entry.block.if_else.statements));
+Entry.block.double_loop_block_test.statementsKeyMap = {
+    STACK_IF: 0,
+    STACK_ELSE: 1
+};
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('loop_block_test', '반복 블록 테스트 %1', {
+    color: '#000',
+    outerline: '#fff',
+}, {
+    params: [
+        {
+            type: 'Indicator',
+            img: 'block_icon/start_icon_play.svg',
+            size: 11,
+        },
+    ],
+    def: [
+        null
+    ],
+    map: {},
+}, 'text', (sprite, script) => {
+
+}, 'basic_loop')
+Entry.block.loop_block_test.statements = JSON.parse(JSON.stringify(Entry.block._if.statements));
+Entry.block.loop_block_test.statementsKeyMap = {
+    STACK: 0,
+};
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('wrong_double_loop_block_test', '잘못된 이중 반복 블록 테스트 %1', {
+    color: '#000',
+    outerline: '#fff',
+}, {
+    params: [
+        {
+            type: 'Indicator',
+            img: 'block_icon/start_icon_play.svg',
+            size: 11,
+        },
+        // LineBreak 없으면 이상한곳에 조립됨
+    ],
+    def: [
+        null,
+        null
+    ],
+    map: {},
+}, 'text', (sprite, script) => {
+
+}, 'basic_double_loop')
+Entry.block.double_loop_block_test.statements = JSON.parse(JSON.stringify(Entry.block.if_else.statements));
+Entry.block.double_loop_block_test.statementsKeyMap = {
+    STACK_IF: 0,
+    STACK_ELSE: 1
+};
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-dangerous_blocks', '%1', {
   color: EntryStatic.colorSet.common.TRANSPARENT,
@@ -5018,6 +5110,13 @@ Entry.staticBlocks.push({
         'open_maker_mypage',
         'helpers_aqu3180',
         'helpers_경찰악어씨',
+
+        'text-testing',
+        
+        // 실험용 블록들
+        'double_loop_block_test',
+        'loop_block_test',
+        'wrong_double_loop_block_test'
 
         'text-dangerous_blocks',
 
