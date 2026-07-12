@@ -4889,8 +4889,8 @@ addBlock('wrong_double_loop_block_test', '잘못된 이중 반복 블록 테스�
 }, 'text', (sprite, script) => {
 
 }, 'basic_double_loop')
-Entry.block.double_loop_block_test.statements = JSON.parse(JSON.stringify(Entry.block.if_else.statements));
-Entry.block.double_loop_block_test.statementsKeyMap = {
+Entry.block.wrong_double_loop_block_test.statements = JSON.parse(JSON.stringify(Entry.block.if_else.statements));
+Entry.block.wrong_double_loop_block_test.statementsKeyMap = {
     STACK_IF: 0,
     STACK_ELSE: 1
 };
