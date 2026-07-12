@@ -63,6 +63,7 @@ $.get('https://raw.githack.com/minirang/MintBlock/main/safe_mintBlock.js')
 <img src="img/block_img11.png">
 <img src="img/block_img12.png">
 <img src="img/block_img13.png">
+<img src="img/block_img14.png">
 
 ---
 
