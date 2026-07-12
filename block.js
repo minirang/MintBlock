@@ -4819,7 +4819,7 @@ addBlock('text-testing', '%1', {
 }, 'basic_text')
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('double_loop_block_test', '이중 반복 블록 테스트 %1 %2', {
-    color: '#000',
+    color: '#262626',
     outerline: '#fff',
 }, {
     params: [
@@ -4847,7 +4847,7 @@ Entry.block.double_loop_block_test.statementsKeyMap = {
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('loop_block_test', '반복 블록 테스트 %1', {
-    color: '#000',
+    color: '#262626',
     outerline: '#fff',
 }, {
     params: [
@@ -4870,7 +4870,7 @@ Entry.block.loop_block_test.statementsKeyMap = {
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('wrong_double_loop_block_test', '잘못된 이중 반복 블록 테스트 %1', {
-    color: '#000',
+    color: '#262626',
     outerline: '#fff',
 }, {
     params: [
@@ -4894,6 +4894,28 @@ Entry.block.wrong_double_loop_block_test.statementsKeyMap = {
     STACK_IF: 0,
     STACK_ELSE: 1
 };
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+addBlock('linebreak_applied_block_test', 'LineBreak를 넣은 일반 블록 테스트 %1 %2', {
+    color: '#262626',
+    outerline: '#fff',
+}, {
+    params: [
+        {
+            type: 'Indicator',
+            img: 'block_icon/start_icon_play.svg',
+            size: 11,
+        },
+        {
+            type: 'LineBreak'
+        }
+    ],
+    def: [
+        null
+    ],
+    map: {},
+}, 'text', (sprite, script) => {
+
+});
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('text-dangerous_blocks', '%1', {
   color: EntryStatic.colorSet.common.TRANSPARENT,
@@ -5117,6 +5139,7 @@ Entry.staticBlocks.push({
         'double_loop_block_test',
         'loop_block_test',
         'wrong_double_loop_block_test',
+        'linebreak_applied_block_test',
 
         'text-dangerous_blocks',
 
