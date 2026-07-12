@@ -2793,62 +2793,83 @@ const content = script.getValue('CONTENT', script);
 const canvas = document.querySelector('#entryCanvas');
 const parentElement = canvas.parentElement;
 if (canvas && parentElement) {
-  if (window.ytPlayer) {
-    window.ytPlayer.destroy();
-    window.ytPlayer = null;
-    window.ytPlayerReady = false;
-  }
-  const oldIframe = document.getElementById('entry-youtube-iframe');
-  if (oldIframe) {
-    oldIframe.remove();
-  }
-  const youtubeIframe = document.createElement('iframe');
-  youtubeIframe.id = 'entry-youtube-iframe';
-  youtubeIframe.setAttribute('src', 'https://www.youtube.com/embed/' + content + '?autoplay=1&mute=1&enablejsapi=1&origin=' + window.location.origin);
-  youtubeIframe.setAttribute('frameborder', '0');
-  youtubeIframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
-  youtubeIframe.setAttribute('allowfullscreen', '');
-  youtubeIframe.style.position = 'absolute';
-  youtubeIframe.style.top = '-10';
-  youtubeIframe.style.left = '0';
-  youtubeIframe.style.zIndex = '10';
-  parentElement.appendChild(youtubeIframe);
-  if (!window.YT) {
-    const tag = document.createElement('script');
-    tag.src = 'https://www.youtube.com/iframe_api';
-    document.head.appendChild(tag);
-  }
-  const createPlayer = () => {
-    window.ytPlayer = new YT.Player(youtubeIframe, {
-      events: {
-        onReady: (event) => {
-          window.ytPlayer = event.target;
-          window.ytPlayerReady = true;
-        }
-      }
-    });
-  };
-  if (window.YT && window.YT.Player) {
-    createPlayer();
-  } else {
-    window.onYouTubeIframeAPIReady = createPlayer;
-  }
-  const updateIframeSize = () => {
-    const canvasRect = canvas.getBoundingClientRect();
-    youtubeIframe.style.width = `${canvasRect.width}px`;
-    youtubeIframe.style.height = `${canvasRect.height}px`;
-  };
-  updateIframeSize();
-  const resizeObserver = new ResizeObserver(entries => {
-    for (let entry of entries) {
-      if (entry.target === canvas) {
-        updateIframeSize();
-      }
+    if (window.ytPlayer && typeof window.ytPlayer.destroy === 'function') {
+        window.ytPlayer.destroy();
+        window.ytPlayer = null;
+        window.ytPlayerReady = false;
     }
-  });
-  resizeObserver.observe(canvas);
+    const oldIframe = document.getElementById('entry-youtube-iframe');
+    if (oldIframe) {
+        oldIframe.remove();
+    }
+    const playerDiv = document.createElement('div');
+    playerDiv.id = 'entry-youtube-iframe';
+    parentElement.appendChild(playerDiv);
+    const updateIframeSize = () => {
+        const iframe = document.getElementById('entry-youtube-iframe');
+        if (iframe && canvas) {
+            const rect = canvas.getBoundingClientRect();
+            iframe.style.width = `${rect.width}px`;
+            iframe.style.height = `${rect.height}px`;
+            iframe.style.top = `${canvas.offsetTop}px`;
+            iframe.style.left = `${canvas.offsetLeft}px`;
+        }
+    };
+    const createPlayer = () => {
+        const canvasRect = canvas.getBoundingClientRect();
+        window.ytPlayer = new YT.Player('entry-youtube-iframe', {
+            videoId: content,
+            width: canvasRect.width,
+            height: canvasRect.height,
+            playerVars: {
+                autoplay: 1,
+                mute: 1,
+                enablejsapi: 1,
+                origin: window.location.origin
+            },
+            events: {
+                onReady: (event) => {
+                    window.ytPlayer = event.target;
+                    window.ytPlayerReady = true;
+                    const generatedIframe = document.getElementById('entry-youtube-iframe');
+                    if (generatedIframe) {
+                        generatedIframe.style.position = 'absolute';
+                        generatedIframe.style.zIndex = '10';
+                        generatedIframe.style.border = '0';
+                        updateIframeSize();
+                    }
+                }
+            }
+        });
+    };
+    if (window.YT && window.YT.Player) {
+        createPlayer();
+    } else {
+        if (!document.getElementById('youtube-api-script')) {
+            const tag = document.createElement('script');
+            tag.id = 'youtube-api-script';
+            tag.src = 'https://www.youtube.com/iframe_api';
+            document.head.appendChild(tag);
+        }
+        const oldCallback = window.onYouTubeIframeAPIReady;
+        window.onYouTubeIframeAPIReady = () => {
+            if (typeof oldCallback === 'function') oldCallback();
+            createPlayer();
+        };
+    }
+    if (!window.ytResizeObserver) {
+        window.ytResizeObserver = new ResizeObserver(entries => {
+            for (let entry of entries) {
+                if (entry.target === canvas) {
+                    updateIframeSize();
+                }
+            }
+        });
+        window.ytResizeObserver.observe(canvas);
+    }
+    window.addEventListener('resize', updateIframeSize);
 } else {
-  console.error("Canvas or its parent element not found.");
+    console.error("Canvas or its parent element not found.");
 }
 })
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2866,18 +2887,18 @@ addBlock('destroy_video', '재생 취소하기 %1', {
     def: [],
     map: {},
 }, 'text', (sprite, script) => {
-const youtubeIframe = document.getElementById('entry-youtube-iframe');
-if (youtubeIframe) {
-  if (window.ytPlayer) {
-    window.ytPlayer.destroy();
-    window.ytPlayer = null;
-    window.ytPlayerReady = false;
-  }
-  youtubeIframe.remove();
-  console.log('YouTube iframe removed.');
-} else {
-  console.log('No YouTube iframe found.');
-}
+if (window.ytPlayer && typeof window.ytPlayer.destroy === 'function') {
+        window.ytPlayer.destroy();
+        window.ytPlayer = null;
+        window.ytPlayerReady = false;
+        console.log('YouTube player destroyed.');
+    } else {
+        const youtubeIframe = document.getElementById('entry-youtube-iframe');
+        if (youtubeIframe) {
+            youtubeIframe.remove();
+            console.log('YouTube iframe removed manually.');
+        }
+    }
 })
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 addBlock('proceed_or_pause_video', '영상 %1 %2', {
