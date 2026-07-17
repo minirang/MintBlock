@@ -1,6 +1,5 @@
 # 🍀MintBlock
 
----
 
 서울민트초코가 만든 엔트리 비공식 블록
 <br><br>
@@ -10,7 +9,6 @@
 <br><br>
 마지막 업데이트 시 블록 개수: 103개
 
----
 
 # 사용법
 
@@ -26,7 +24,6 @@ $.get('https://raw.githack.com/minirang/MintBlock/main/block.js')
 $.get('https://raw.githack.com/minirang/MintBlock/main/safe_mintBlock.js')
 ```
 
----
 
 # 참고사항
 
@@ -45,7 +42,6 @@ $.get('https://raw.githack.com/minirang/MintBlock/main/safe_mintBlock.js')
 <br><br>
 또한 포크 시 되도록 discussion에 남겨주시기 바랍니다.
 
----
 
 # 블록 이미지들
 
@@ -65,7 +61,6 @@ $.get('https://raw.githack.com/minirang/MintBlock/main/safe_mintBlock.js')
 <img src="img/block_img13.png">
 <img src="img/block_img14.png">
 
----
 
 ![License](https://img.shields.io/badge/license-MIT-blue)
 ![JavaScript](https://img.shields.io/badge/language-JavaScript-yellow)
