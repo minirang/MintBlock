@@ -20,12 +20,12 @@
 2. F12 ==> 콘솔
 3. 복사 붙여넣기 (붙여넣기가 안된다면 '붙여넣기 허용'이나 'allow pasting' 입력)
 ```javascript
-$.get('https://raw.githack.com/minirang/MintBlock/main/block.js')
+$.get('https://raw.githack.com/minirang/MintBlock/master/block.js')
 ```
 
 조금이라도 더 안전한 버전을 쓰고 싶다면 
 ```javascript
-$.get('https://raw.githack.com/minirang/MintBlock/main/safe_mintBlock.js')
+$.get('https://raw.githack.com/minirang/MintBlock/master/safe.js')
 ```
 
 ---
